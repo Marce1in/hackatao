@@ -46,7 +46,7 @@ import type {
   RecentHistoryItem,
 } from './src/types/appData';
 
-type TabKey = 'dashboard' | 'family' | 'exams' | 'history' | 'profile' | 'finance' | 'online' | 'lucas';
+type TabKey = 'dashboard' | 'family' | 'exams' | 'history' | 'profile' | 'finance' | 'online' | 'familyMember' | 'familyDoctor';
 type ActionHandler = (message: string) => void;
 
 const colors = {
@@ -134,10 +134,84 @@ const financeHistory = [
   { id: 'refund', title: 'Reembolso Consulta', date: '03 Out, 11:15', value: '+ R$ 90,00' },
 ];
 
+const financeCategories = [
+  { id: 'balance', label: 'Saldo Disponível', value: 'R$ 2.480,00', icon: 'wallet' },
+  { id: 'bills', label: 'Boletos', value: '2 pendentes', icon: 'receipt' },
+  { id: 'transfer', label: 'Transferir', value: 'PIX rápido', icon: 'send' },
+  { id: 'card', label: 'Carteirinha', value: 'Plano Premium', icon: 'shield' },
+];
+
+const familyDoctorStats = [
+  { label: 'Avaliação', value: '4.9' },
+  { label: 'Espera', value: '15 min' },
+  { label: 'Consultas', value: '1.2k' },
+];
+
+const familyDoctorSpecialties = ['Clínica Geral', 'Família', 'Preventivo'];
+
 const lucasActivities = [
   { id: 'ped', title: 'Consulta Pediátrica', subtitle: 'Dra. Beatriz Santos • Clínica Vida', date: '12 Ago', icon: 'medical' },
   { id: 'vac', title: 'Vacinação: Reforço Tetravalente', subtitle: 'Unidade Básica de Saúde Central', date: '05 Jul', icon: 'vaccine' },
   { id: 'blood', title: 'Exame de Sangue', subtitle: 'Laboratório Central Vitality', date: '18 Jun', icon: 'document' },
+];
+
+const familyMemberDetails = {
+  ricardo: {
+    age: '42 anos',
+    relation: 'Dependente',
+    cardTone: 'attention',
+    alertTitle: 'Atenção necessária',
+    alertText: 'Pressão acima da média nas últimas medições. Recomenda-se nova consulta preventiva.',
+    metrics: [
+      { label: 'BPM', unit: 'bpm', value: 96 },
+      { label: 'PA', unit: 'mmHg', value: 149 },
+    ],
+    health: ['Tipo O+', 'Alergia: dipirona', 'Uso contínuo: losartana'],
+    activities: [
+      { id: 'pressure', title: 'Pressão elevada', subtitle: 'Medição registrada hoje às 08:20', date: 'Hoje', icon: 'heart' },
+      { id: 'cardio', title: 'Retorno cardiologista', subtitle: 'Dr. Roberto Mendes • Clínica Vida', date: '12 Jul', icon: 'medical' },
+      { id: 'labs', title: 'Exames pendentes', subtitle: 'Colesterol e triglicérides solicitados', date: 'Pendente', icon: 'document' },
+    ],
+  },
+  lucas: {
+    age: '7 anos',
+    relation: 'Dependente',
+    cardTone: 'normal',
+    alertTitle: 'Monitoramento normal',
+    alertText: 'Sinais estáveis e vacinação em dia. Próxima consulta pediátrica agendada.',
+    metrics: [
+      { label: 'BPM', unit: 'bpm', value: 78 },
+      { label: 'Glicose', unit: 'mg/dL', value: 91 },
+    ],
+    health: ['Tipo A+', 'Sem alergias', 'Sem uso contínuo'],
+    activities: lucasActivities,
+  },
+  helena: {
+    age: '34 anos',
+    relation: 'Dependente',
+    cardTone: 'normal',
+    alertTitle: 'Monitoramento normal',
+    alertText: 'Rotina de prevenção ativa, sem pendências críticas no momento.',
+    metrics: [
+      { label: 'BPM', unit: 'bpm', value: 72 },
+      { label: 'Glicose', unit: 'mg/dL', value: 88 },
+    ],
+    health: ['Tipo B+', 'Alergia: penicilina', 'Uso contínuo: não'],
+    activities: [
+      { id: 'routine', title: 'Consulta de rotina', subtitle: 'Clínica Vida • Check-up anual', date: '18 Jul', icon: 'medical' },
+      { id: 'blood', title: 'Hemograma completo', subtitle: 'Lab Vitality Centro', date: '22 Jun', icon: 'document' },
+      { id: 'vaccine', title: 'Vacina Influenza', subtitle: 'Unidade Básica Central', date: '05 Jun', icon: 'vaccine' },
+    ],
+  },
+} as const;
+
+const userHealthProfile = [
+  { label: 'Tipo sanguíneo', value: 'O+' },
+  { label: 'Alergias', value: 'Dipirona' },
+  { label: 'Remédio contínuo', value: 'Losartana 50mg' },
+  { label: 'Condições', value: 'Hipertensão controlada' },
+  { label: 'Contato emergência', value: 'Ricardo Silva • (53) 99999-1212' },
+  { label: 'Observações', value: 'Preferência por atendimento matinal' },
 ];
 
 const dotColor = {
@@ -475,12 +549,12 @@ const FamilyScreen = ({
   data,
   onAction,
   onHistory,
-  onLucas,
+  onMember,
 }: {
   data: AppData;
   onAction: ActionHandler;
   onHistory: () => void;
-  onLucas: () => void;
+  onMember: (dependentId: string) => void;
 }) => (
   <>
     <FamilyPrimaryCard data={data} onHistory={onHistory} />
@@ -501,7 +575,7 @@ const FamilyScreen = ({
         <DependentRow
           dependent={dependent}
           key={dependent.id}
-          onPress={dependent.id === 'lucas' ? onLucas : () => onAction(`${dependent.name} selecionado.`)}
+          onPress={() => onMember(dependent.id)}
         />
       ))}
     </View>
@@ -589,12 +663,12 @@ const DependentRow = ({ dependent, onPress }: { dependent: FamilyDependent; onPr
 
 const ExamsScreen = ({
   onAction,
-  onFamily,
+  onFamilyDoctor,
   onFinance,
   onOnline,
 }: {
   onAction: ActionHandler;
-  onFamily: () => void;
+  onFamilyDoctor: () => void;
   onFinance: () => void;
   onOnline: () => void;
 }) => (
@@ -607,7 +681,7 @@ const ExamsScreen = ({
       <ServiceCard icon="calendar" label="Agendar Exame" onPress={() => onAction('Fluxo de agendamento de exame iniciado.')} tone="surface" />
       <ServiceCard icon="video" label="Consulta Online" onPress={onOnline} tone="primary" />
       <ServiceCard icon="clock" label="Exames para Fazer" onPress={() => onAction('Lista de exames pendentes aberta.')} tone="secondary" />
-      <ServiceCard icon="medical" label="Médico Familiar" onPress={onFamily} tone="surface" />
+      <ServiceCard icon="medical" label="Médico Familiar" onPress={onFamilyDoctor} tone="surface" />
     </View>
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>Próximos Agendamentos</Text>
@@ -791,21 +865,56 @@ const DoctorCard = ({ doctor, onConsult }: { doctor: (typeof onlineDoctors)[numb
 
 const FinanceScreen = ({ onAction, onHistory }: { onAction: ActionHandler; onHistory: () => void }) => (
   <>
-    <View style={styles.financeHero}>
-      <Text style={styles.financeLabel}>Saldo disponível</Text>
-      <Text style={styles.financeValue}>R$ 2.480,00</Text>
-      <Text style={styles.financeCopy}>Plano Premium ativo • Próxima cobrança em 2 dias</Text>
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionTitle}>Categorias</Text>
+      <Pressable accessibilityRole="button" onPress={onHistory}>
+        <Text style={styles.linkText}>Extrato</Text>
+      </Pressable>
     </View>
-    <View style={styles.financeActionGrid}>
-      <FinanceAction icon="receipt" label="Pagar Fatura" onPress={() => onAction('Pagamento da fatura preparado.')} subtitle="Boletos e convênios" />
-      <FinanceAction icon="send" label="Transferir" onPress={() => onAction('Transferência PIX preparada.')} subtitle="Envio rápido PIX" />
-      <FinanceAction icon="history" label="Histórico" onPress={onHistory} subtitle="Ver tudo" />
+    <View style={styles.financeCategoryGrid}>
+      {financeCategories.map((item) => (
+        <FinanceCategoryCard
+          item={item}
+          key={item.id}
+          onPress={() => onAction(`${item.label}: ${item.value}.`)}
+        />
+      ))}
+    </View>
+    <View style={styles.financeBalancePanel}>
+      <View>
+        <Text style={styles.financeLabel}>Saldo disponível</Text>
+        <Text style={styles.financeValue}>R$ 2.480,00</Text>
+      </View>
+      <View style={styles.financeBalanceChips}>
+        <Text style={styles.financeBalanceChip}>Premium</Text>
+        <Text style={styles.financeBalanceChip}>PIX ativo</Text>
+      </View>
+    </View>
+    <View style={styles.financeActionRow}>
+      <Pressable accessibilityRole="button" onPress={() => onAction('Pagamento da fatura preparado.')} style={({ pressed }) => [styles.financePillButton, pressed && styles.pressed]}>
+        <Receipt color={colors.onPrimary} size={16} />
+        <Text style={styles.financePillButtonText}>Pagar Fatura</Text>
+      </Pressable>
+      <Pressable accessibilityRole="button" onPress={() => onAction('Transferência PIX preparada.')} style={({ pressed }) => [styles.financePillButtonMuted, pressed && styles.pressed]}>
+        <Send color={colors.primary} size={16} />
+        <Text style={styles.financePillButtonMutedText}>Transferir</Text>
+      </Pressable>
     </View>
     <Text style={styles.sectionTitle}>Pagamentos Pendentes</Text>
     <View style={styles.listStack}>
       {financeItems.map((item) => (
         <FinanceDueCard item={item} key={item.id} onPress={() => onAction(`${item.action}: ${item.title} (${item.value}).`)} />
       ))}
+    </View>
+    <View style={styles.financeCheckoutPanel}>
+      <View style={styles.checkoutCopy}>
+        <Text style={styles.checkoutTitle}>Continuar pagamento</Text>
+        <Text style={styles.checkoutText}>Fatura do plano vence em 2 dias.</Text>
+      </View>
+      <Pressable accessibilityRole="button" onPress={() => onAction('Checkout financeiro retomado.')} style={({ pressed }) => [styles.financeCheckoutButton, pressed && styles.pressed]}>
+        <Text style={styles.financeCheckoutButtonText}>Abrir</Text>
+        <ChevronRight color={colors.onSecondaryContainer} size={16} />
+      </Pressable>
     </View>
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>Histórico Recente</Text>
@@ -819,6 +928,19 @@ const FinanceScreen = ({ onAction, onHistory }: { onAction: ActionHandler; onHis
       ))}
     </View>
   </>
+);
+
+const FinanceCategoryCard = ({ item, onPress }: { item: (typeof financeCategories)[number]; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.financeCategoryCard, pressed && styles.pressed]}>
+    <View style={styles.financeCategoryIcon}>
+      {item.icon === 'wallet' ? <WalletCards color={colors.primary} size={22} /> : null}
+      {item.icon === 'receipt' ? <Receipt color={colors.primary} size={22} /> : null}
+      {item.icon === 'send' ? <Send color={colors.primary} size={22} /> : null}
+      {item.icon === 'shield' ? <ShieldCheck color={colors.primary} size={22} /> : null}
+    </View>
+    <Text style={styles.financeCategoryLabel}>{item.label}</Text>
+    <Text style={styles.financeCategoryValue}>{item.value}</Text>
+  </Pressable>
 );
 
 const FinanceAction = ({
@@ -872,6 +994,153 @@ const FinanceHistoryRow = ({ item, onPress }: { item: (typeof financeHistory)[nu
       <Text style={styles.appointmentSubtitle}>{item.date}</Text>
     </View>
     <Text style={[styles.financeHistoryValue, item.value.startsWith('+') && styles.financeHistoryValuePositive]}>{item.value}</Text>
+  </Pressable>
+);
+
+const FamilyDoctorScreen = ({ onAction, onOnline }: { onAction: ActionHandler; onOnline: () => void }) => (
+  <>
+    <View style={styles.familyDoctorHero}>
+      <View style={styles.familyDoctorAvatar}>
+        <Stethoscope color={colors.primary} size={34} />
+      </View>
+      <Text style={styles.familyDoctorName}>Dr. Ricardo Almeida</Text>
+      <Text style={styles.familyDoctorMeta}>Médico Familiar • CRM 20458</Text>
+      <View style={styles.familyDoctorActions}>
+        <Pressable accessibilityRole="button" onPress={onOnline} style={({ pressed }) => [styles.familyDoctorPrimaryButton, pressed && styles.pressed]}>
+          <Video color={colors.onPrimary} size={16} />
+          <Text style={styles.familyDoctorPrimaryText}>Consultar agora</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={() => onAction('Visita com Dr. Ricardo Almeida agendada.')} style={({ pressed }) => [styles.familyDoctorSecondaryButton, pressed && styles.pressed]}>
+          <CalendarClock color={colors.onSecondaryContainer} size={16} />
+          <Text style={styles.familyDoctorSecondaryText}>Agendar visita</Text>
+        </Pressable>
+      </View>
+    </View>
+    <View style={styles.familyDoctorStatGrid}>
+      {familyDoctorStats.map((stat) => (
+        <Pressable accessibilityRole="button" key={stat.label} onPress={() => onAction(`${stat.label}: ${stat.value}.`)} style={({ pressed }) => [styles.familyDoctorStat, pressed && styles.pressed]}>
+          <Text style={styles.familyDoctorStatValue}>{stat.value}</Text>
+          <Text style={styles.familyDoctorStatLabel}>{stat.label}</Text>
+        </Pressable>
+      ))}
+    </View>
+    <View style={styles.familyDoctorPanel}>
+      <Text style={styles.sectionTitle}>Sobre o médico</Text>
+      <Text style={styles.familyDoctorBio}>
+        Acompanhamento contínuo para família, revisão de exames e orientação preventiva com retorno rápido pelo app.
+      </Text>
+      <View style={styles.familyDoctorSpecialtyRow}>
+        {familyDoctorSpecialties.map((item) => (
+          <Text key={item} style={styles.familyDoctorSpecialty}>
+            {item}
+          </Text>
+        ))}
+      </View>
+    </View>
+    <Pressable accessibilityRole="button" onPress={() => onAction('Plano de cuidado familiar aberto.')} style={({ pressed }) => [styles.familyDoctorCareCard, pressed && styles.pressed]}>
+      <HeartPulse color={colors.primary} size={24} />
+      <View style={styles.checkoutCopy}>
+        <Text style={styles.appointmentTitle}>Plano de cuidado</Text>
+        <Text style={styles.appointmentSubtitle}>Camila e dependentes em acompanhamento ativo.</Text>
+      </View>
+      <ChevronRight color={colors.outline} size={20} />
+    </Pressable>
+  </>
+);
+
+const FamilyMemberScreen = ({
+  data,
+  memberId,
+  onAction,
+  onOnline,
+}: {
+  data: AppData;
+  memberId: string;
+  onAction: ActionHandler;
+  onOnline: () => void;
+}) => {
+  const member = data.family.dependents.find((dependent) => dependent.id === memberId) ?? data.family.dependents[0];
+  const details = familyMemberDetails[(member?.id ?? 'ricardo') as keyof typeof familyMemberDetails] ?? familyMemberDetails.ricardo;
+  const attention = details.cardTone === 'attention';
+
+  return (
+    <>
+      <View style={[styles.memberProfileCard, attention && styles.memberProfileCardAttention]}>
+        {member?.avatarUrl ? (
+          <Image source={{ uri: member.avatarUrl }} style={styles.memberProfileAvatar} />
+        ) : (
+          <View style={styles.memberProfileAvatarFallback}>
+            <UserRound color={colors.onSecondaryContainer} size={34} />
+          </View>
+        )}
+        <Text style={styles.memberProfileName}>{member?.name}</Text>
+        <Text style={styles.memberProfileMeta}>
+          {details.relation} • {details.age}
+        </Text>
+        <View style={styles.memberMetricGrid}>
+          {details.metrics.map((metric) => (
+            <FamilyMetric key={metric.label} metric={metric} />
+          ))}
+        </View>
+      </View>
+      <View style={[styles.memberAlertCard, attention && styles.memberAlertCardAttention]}>
+        <ShieldCheck color={attention ? colors.error : colors.primary} size={22} />
+        <View style={styles.checkoutCopy}>
+          <Text style={[styles.memberAlertTitle, attention && styles.memberAlertTitleAttention]}>{details.alertTitle}</Text>
+          <Text style={styles.memberAlertText}>{details.alertText}</Text>
+        </View>
+      </View>
+      <View style={styles.memberHealthGrid}>
+        {details.health.map((item) => (
+          <Pressable accessibilityRole="button" key={item} onPress={() => onAction(`${member?.name}: ${item}.`)} style={({ pressed }) => [styles.memberHealthChip, pressed && styles.pressed]}>
+            <Text style={styles.memberHealthText}>{item}</Text>
+          </Pressable>
+        ))}
+      </View>
+      <View style={styles.familyDoctorActions}>
+        <Pressable accessibilityRole="button" onPress={onOnline} style={({ pressed }) => [styles.familyDoctorPrimaryButton, pressed && styles.pressed]}>
+          <Video color={colors.onPrimary} size={16} />
+          <Text style={styles.familyDoctorPrimaryText}>Consulta online</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={() => onAction(`Consulta de ${member?.name} agendada.`)} style={({ pressed }) => [styles.familyDoctorSecondaryButton, pressed && styles.pressed]}>
+          <CalendarClock color={colors.onSecondaryContainer} size={16} />
+          <Text style={styles.familyDoctorSecondaryText}>Agendar</Text>
+        </Pressable>
+      </View>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Histórico de {member?.name?.split(' ')[0]}</Text>
+        <Pressable accessibilityRole="button" onPress={() => onAction(`Filtro de atividades de ${member?.name} aplicado.`)}>
+          <Text style={styles.linkText}>Filtrar</Text>
+        </Pressable>
+      </View>
+      <View style={styles.listStack}>
+        {details.activities.map((activity) => (
+          <FamilyMemberActivity activity={activity} key={activity.id} onPress={() => onAction(`${activity.title} aberto para ${member?.name}.`)} />
+        ))}
+      </View>
+    </>
+  );
+};
+
+const FamilyMemberActivity = ({
+  activity,
+  onPress,
+}: {
+  activity: (typeof familyMemberDetails)[keyof typeof familyMemberDetails]['activities'][number];
+  onPress: () => void;
+}) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.historyCard, pressed && styles.pressed]}>
+    <View style={styles.historyIconBox}>
+      {activity.icon === 'heart' ? <HeartPulse color={colors.primary} size={20} /> : null}
+      {activity.icon === 'medical' ? <BriefcaseMedical color={colors.primary} size={20} /> : null}
+      {activity.icon === 'vaccine' ? <Syringe color={colors.primary} size={20} /> : null}
+      {activity.icon === 'document' ? <FileText color={colors.primary} size={20} /> : null}
+    </View>
+    <View style={styles.historyCardCopy}>
+      <Text style={styles.historyCardTitle}>{activity.title}</Text>
+      <Text style={styles.historySubtitle}>{activity.subtitle}</Text>
+    </View>
+    <Text style={styles.historyCardTrailing}>{activity.date}</Text>
   </Pressable>
 );
 
@@ -1115,11 +1384,19 @@ const ProfileScreen = ({ data, onAction }: { data: AppData; onAction: ActionHand
       <Text style={styles.profileName}>{data.user.name}</Text>
       <Text style={styles.profilePlan}>{data.user.plan}</Text>
     </View>
+    <View style={styles.sectionHeader}>
+      <Text style={styles.sectionTitle}>Dados de Saúde</Text>
+      <Text style={styles.liveBadge}>MOCK</Text>
+    </View>
     <View style={styles.profileGrid}>
-      <ProfileInfo label="Equipe" onPress={() => onAction(`Equipe selecionada: ${data.profile.careTeam}.`)} value={data.profile.careTeam} />
-      <ProfileInfo label="Próximo Exame" onPress={() => onAction(`Próximo exame: ${data.profile.nextExam}.`)} value={data.profile.nextExam} />
-      <ProfileInfo label="Fonte" onPress={() => onAction('Fonte de dados mockAppData.json conferida.')} value="mockAppData.json" />
-      <ProfileInfo label="Integração" onPress={() => onAction('Endpoint /api/mobile/app-data selecionado.')} value="/api/mobile/app-data" />
+      {userHealthProfile.map((item) => (
+        <ProfileInfo
+          key={item.label}
+          label={item.label}
+          onPress={() => onAction(`${item.label}: ${item.value}.`)}
+          value={item.value}
+        />
+      ))}
     </View>
   </>
 );
@@ -1133,12 +1410,17 @@ const ProfileInfo = ({ label, onPress, value }: { label: string; onPress: () => 
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState<TabKey>('dashboard');
+  const [selectedFamilyMemberId, setSelectedFamilyMemberId] = useState('ricardo');
   const [notice, setNotice] = useState('');
   const { data, error, loading, reload } = useAppData();
   const showNotice: ActionHandler = (message) => setNotice(message);
   const changeTab = (tab: TabKey) => {
     setNotice('');
     setActiveTab(tab);
+  };
+  const openFamilyMember = (dependentId: string) => {
+    setSelectedFamilyMemberId(dependentId);
+    changeTab('familyMember');
   };
 
   if (loading && !data) {
@@ -1153,9 +1435,16 @@ function AppContent() {
     return <ErrorState message="Sem dados do JSON mock." reload={reload} />;
   }
 
-  const detailTabs = activeTab === 'online' || activeTab === 'lucas' || activeTab === 'finance';
+  const selectedFamilyMember = data.family.dependents.find((dependent) => dependent.id === selectedFamilyMemberId);
+  const detailTabs = activeTab === 'online' || activeTab === 'familyMember' || activeTab === 'finance' || activeTab === 'familyDoctor';
   const navActiveTab =
-    activeTab === 'online' ? 'exams' : activeTab === 'lucas' ? 'family' : activeTab === 'finance' ? 'dashboard' : activeTab;
+    activeTab === 'online' || activeTab === 'familyDoctor'
+      ? 'exams'
+      : activeTab === 'familyMember'
+        ? 'family'
+        : activeTab === 'finance'
+          ? 'dashboard'
+          : activeTab;
   const title =
     activeTab === 'family'
       ? 'Minha Família'
@@ -1167,22 +1456,26 @@ function AppContent() {
             ? 'Financeiro'
             : activeTab === 'online'
               ? 'Conversa Online'
-              : activeTab === 'lucas'
-                ? 'Lucas Soares'
-                : `Olá ${data.user.firstName}`;
+              : activeTab === 'familyDoctor'
+                ? 'Médico Familiar'
+                : activeTab === 'familyMember'
+                  ? selectedFamilyMember?.name ?? 'Membro da Família'
+                  : `Olá ${data.user.firstName}`;
   const content =
     activeTab === 'family' ? (
-      <FamilyScreen data={data} onAction={showNotice} onHistory={() => changeTab('history')} onLucas={() => changeTab('lucas')} />
+      <FamilyScreen data={data} onAction={showNotice} onHistory={() => changeTab('history')} onMember={openFamilyMember} />
     ) : activeTab === 'exams' ? (
-      <ExamsScreen onAction={showNotice} onFamily={() => changeTab('family')} onFinance={() => changeTab('finance')} onOnline={() => changeTab('online')} />
+      <ExamsScreen onAction={showNotice} onFamilyDoctor={() => changeTab('familyDoctor')} onFinance={() => changeTab('finance')} onOnline={() => changeTab('online')} />
     ) : activeTab === 'history' ? (
       <HistoryScreen data={data} onAction={showNotice} />
     ) : activeTab === 'finance' ? (
       <FinanceScreen onAction={showNotice} onHistory={() => changeTab('history')} />
     ) : activeTab === 'online' ? (
       <OnlineScreen onAction={showNotice} />
-    ) : activeTab === 'lucas' ? (
-      <LucasScreen data={data} onAction={showNotice} onOnline={() => changeTab('online')} />
+    ) : activeTab === 'familyDoctor' ? (
+      <FamilyDoctorScreen onAction={showNotice} onOnline={() => changeTab('online')} />
+    ) : activeTab === 'familyMember' ? (
+      <FamilyMemberScreen data={data} memberId={selectedFamilyMemberId} onAction={showNotice} onOnline={() => changeTab('online')} />
     ) : activeTab === 'profile' ? (
       <ProfileScreen data={data} onAction={showNotice} />
     ) : (
@@ -1193,7 +1486,11 @@ function AppContent() {
     <ScreenShell
       activeTab={navActiveTab}
       data={data}
-      detail={detailTabs ? { onBack: () => changeTab(activeTab === 'lucas' ? 'family' : activeTab === 'online' ? 'exams' : 'dashboard') } : undefined}
+      detail={
+        detailTabs
+          ? { onBack: () => changeTab(activeTab === 'familyMember' ? 'family' : activeTab === 'online' || activeTab === 'familyDoctor' ? 'exams' : 'dashboard') }
+          : undefined
+      }
       notice={notice}
       onChangeTab={changeTab}
       onNotifications={() => showNotice('Você tem lembretes de exames, consulta online e pagamentos.')}
@@ -2378,6 +2675,104 @@ const styles = StyleSheet.create({
   financeActionGrid: {
     gap: 12,
   },
+  financeCategoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  financeCategoryCard: {
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 12,
+    borderWidth: 1,
+    gap: 8,
+    minHeight: 112,
+    padding: 14,
+    width: '48%',
+    ...shadow,
+  },
+  financeCategoryIcon: {
+    alignItems: 'center',
+    backgroundColor: colors.tertiaryContainer,
+    borderRadius: 12,
+    height: 38,
+    justifyContent: 'center',
+    width: 38,
+  },
+  financeCategoryLabel: {
+    color: colors.onSurface,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
+  financeCategoryValue: {
+    color: colors.onSurfaceVariant,
+    fontSize: 12,
+    lineHeight: 16,
+  },
+  financeBalancePanel: {
+    backgroundColor: colors.primary,
+    borderRadius: 14,
+    gap: 14,
+    padding: 18,
+    ...shadow,
+  },
+  financeBalanceChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  financeBalanceChip: {
+    backgroundColor: colors.onSecondaryContainer,
+    borderRadius: 999,
+    color: colors.secondaryContainer,
+    fontSize: 11,
+    fontWeight: '800',
+    lineHeight: 15,
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  financeActionRow: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  financePillButton: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: 12,
+  },
+  financePillButtonText: {
+    color: colors.onPrimary,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
+  financePillButtonMuted: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.outlineVariant,
+    borderRadius: 12,
+    borderWidth: 1,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    minHeight: 48,
+    paddingHorizontal: 12,
+  },
+  financePillButtonMutedText: {
+    color: colors.primary,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
   financeAction: {
     alignItems: 'center',
     backgroundColor: colors.surface,
@@ -2479,6 +2874,262 @@ const styles = StyleSheet.create({
   },
   financeHistoryValuePositive: {
     color: colors.primary,
+  },
+  financeCheckoutPanel: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: 14,
+    flexDirection: 'row',
+    gap: 14,
+    padding: 16,
+    ...shadow,
+  },
+  financeCheckoutButton: {
+    alignItems: 'center',
+    backgroundColor: colors.secondaryContainer,
+    borderRadius: 999,
+    flexDirection: 'row',
+    gap: 3,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  financeCheckoutButtonText: {
+    color: colors.onSecondaryContainer,
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
+  },
+  familyDoctorHero: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 14,
+    borderWidth: 1,
+    padding: 18,
+    ...shadow,
+  },
+  familyDoctorAvatar: {
+    alignItems: 'center',
+    backgroundColor: colors.tertiaryFixed,
+    borderColor: colors.secondaryContainer,
+    borderRadius: 42,
+    borderWidth: 3,
+    height: 84,
+    justifyContent: 'center',
+    width: 84,
+  },
+  familyDoctorName: {
+    color: colors.onSurface,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 28,
+    marginTop: 12,
+  },
+  familyDoctorMeta: {
+    color: colors.onSurfaceVariant,
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 16,
+    textTransform: 'uppercase',
+  },
+  familyDoctorActions: {
+    flexDirection: 'row',
+    gap: 10,
+    marginTop: 18,
+    width: '100%',
+  },
+  familyDoctorPrimaryButton: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    minHeight: 46,
+  },
+  familyDoctorPrimaryText: {
+    color: colors.onPrimary,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
+  familyDoctorSecondaryButton: {
+    alignItems: 'center',
+    backgroundColor: colors.secondaryContainer,
+    borderRadius: 12,
+    flex: 1,
+    flexDirection: 'row',
+    gap: 8,
+    justifyContent: 'center',
+    minHeight: 46,
+  },
+  familyDoctorSecondaryText: {
+    color: colors.onSecondaryContainer,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
+  familyDoctorStatGrid: {
+    flexDirection: 'row',
+    gap: 10,
+  },
+  familyDoctorStat: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 12,
+    borderWidth: 1,
+    flex: 1,
+    padding: 12,
+  },
+  familyDoctorStatValue: {
+    color: colors.primary,
+    fontSize: 18,
+    fontWeight: '800',
+    lineHeight: 24,
+  },
+  familyDoctorStatLabel: {
+    color: colors.onSurfaceVariant,
+    fontSize: 11,
+    fontWeight: '700',
+    lineHeight: 15,
+    textTransform: 'uppercase',
+  },
+  familyDoctorPanel: {
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 14,
+    borderWidth: 1,
+    gap: 12,
+    padding: 16,
+  },
+  familyDoctorBio: {
+    color: colors.onSurfaceVariant,
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  familyDoctorSpecialtyRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  familyDoctorSpecialty: {
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: 999,
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+  },
+  familyDoctorCareCard: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 14,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 12,
+    padding: 14,
+    ...shadow,
+  },
+  memberProfileCard: {
+    alignItems: 'center',
+    backgroundColor: colors.primaryContainer,
+    borderRadius: 14,
+    padding: 18,
+    ...shadow,
+  },
+  memberProfileCardAttention: {
+    backgroundColor: colors.primary,
+  },
+  memberProfileAvatar: {
+    borderColor: colors.onPrimaryContainer,
+    borderRadius: 38,
+    borderWidth: 3,
+    height: 76,
+    width: 76,
+  },
+  memberProfileAvatarFallback: {
+    alignItems: 'center',
+    backgroundColor: colors.secondaryContainer,
+    borderColor: colors.onPrimaryContainer,
+    borderRadius: 38,
+    borderWidth: 3,
+    height: 76,
+    justifyContent: 'center',
+    width: 76,
+  },
+  memberProfileName: {
+    color: colors.onPrimary,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 30,
+    marginTop: 12,
+  },
+  memberProfileMeta: {
+    color: colors.onPrimaryContainer,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0,
+    lineHeight: 16,
+    textTransform: 'uppercase',
+  },
+  memberMetricGrid: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 18,
+    width: '100%',
+  },
+  memberAlertCard: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 14,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 12,
+    padding: 14,
+  },
+  memberAlertCardAttention: {
+    borderColor: '#F2B8B5',
+    backgroundColor: '#FFF7F6',
+  },
+  memberAlertTitle: {
+    color: colors.primary,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 21,
+  },
+  memberAlertTitleAttention: {
+    color: colors.error,
+  },
+  memberAlertText: {
+    color: colors.onSurfaceVariant,
+    fontSize: 13,
+    lineHeight: 18,
+  },
+  memberHealthGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  memberHealthChip: {
+    backgroundColor: colors.surface,
+    borderColor: colors.outlineVariant,
+    borderRadius: 999,
+    borderWidth: 1,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+  },
+  memberHealthText: {
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: '800',
+    lineHeight: 16,
   },
   lucasProfileCard: {
     alignItems: 'center',
