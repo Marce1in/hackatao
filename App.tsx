@@ -1222,7 +1222,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: colors.background,
     flex: 1,
-    maxWidth: 393,
+    maxWidth: 768,
     position: 'relative',
     width: '100%',
   },
