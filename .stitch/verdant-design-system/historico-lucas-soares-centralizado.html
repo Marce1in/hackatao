@@ -1,0 +1,317 @@
+<!DOCTYPE html><html class="light" lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+<title>Perfil Histórico - Lucas Soares</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#002112",
+                "on-secondary": "#ffffff",
+                "on-secondary-container": "#4d6c00",
+                "on-tertiary": "#ffffff",
+                "on-primary-fixed-variant": "#00522f",
+                "surface-container-highest": "#e1e3e4",
+                "tertiary-fixed-dim": "#93d5af",
+                "surface-variant": "#e1e3e4",
+                "surface-tint": "#006d40",
+                "inverse-surface": "#2e3132",
+                "tertiary-container": "#428160",
+                "on-error": "#ffffff",
+                "surface-container": "#edeeef",
+                "surface": "#f8f9fa",
+                "secondary-fixed": "#c3f266",
+                "primary": "#006a3f",
+                "surface-container-low": "#f3f4f5",
+                "surface-container-lowest": "#ffffff",
+                "secondary-fixed-dim": "#a8d64d",
+                "primary-container": "#008650",
+                "on-tertiary-fixed-variant": "#0a5134",
+                "on-error-container": "#93000a",
+                "inverse-primary": "#6fdb9c",
+                "outline": "#6e7a70",
+                "on-primary": "#ffffff",
+                "secondary": "#496800",
+                "on-secondary-fixed-variant": "#364e00",
+                "on-primary-fixed": "#002110",
+                "background": "#f8f9fa",
+                "secondary-container": "#c0f063",
+                "on-background": "#191c1d",
+                "on-surface-variant": "#3e4a41",
+                "on-surface": "#191c1d",
+                "on-tertiary-container": "#f6fff6",
+                "error-container": "#ffdad6",
+                "surface-bright": "#f8f9fa",
+                "primary-fixed": "#8cf8b7",
+                "on-primary-container": "#f6fff5",
+                "tertiary": "#276749",
+                "primary-fixed-dim": "#6fdb9c",
+                "surface-container-high": "#e7e8e9",
+                "on-secondary-fixed": "#141f00",
+                "inverse-on-surface": "#f0f1f2",
+                "tertiary-fixed": "#aff1ca",
+                "outline-variant": "#bdcabe",
+                "surface-dim": "#d9dadb"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "base": "4px",
+                "xs": "4px",
+                "lg": "24px",
+                "xl": "32px",
+                "sm": "8px",
+                "md": "16px",
+                "margin-mobile": "20px",
+                "gutter": "16px",
+                "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "headline-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-sm": ["Inter"],
+                "display-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "display-lg-mobile": ["Inter"],
+                "headline-md-mobile": ["Inter"]
+            },
+            "fontSize": {
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "display-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                "headline-md-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: -24px;
+            width: 2px;
+            background-color: #bdcabe;
+            z-index: 0;
+        }
+        .timeline-item:last-child .timeline-line::before {
+            display: none;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="bg-background dark:bg-background sticky top-0 z-40 w-full">
+<div class="flex justify-between items-center px-margin-mobile h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<button class="p-2 -ml-2 text-on-background active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-background font-bold">Lucas Soares</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">notifications</span>
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border-2 border-primary">
+<img class="w-full h-full object-cover" data-alt="A portrait of a young Brazilian woman named Camila with a warm, professional smile, representing a caring mother profile. The lighting is soft and natural, typical of a modern health app's user profile image. The background is a clean, minimalist home environment with soft green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQBnXliOR590T0muheTqUrG4xxLKd9xuOlfAjbCyxRlI-vXVluvDy1yBt-bn3lFqthYkT18lNPydzetYKh58jpqSZGlpGdzm3Ifesa6Wyj3AaP66iG4jPmUlg2VlG0iAcsDIKkhNSlmyBoUNxxDwcOHKJmGJ7rTuhql43LqOP0iK8QDPQfrvyo6LlH_rqEUebgjFwY0t1eVksYciakbzx0pkIS1TzCdUvLmHEqFZGt1g1teGE-p1N_myezUSvfoC_k6zFPfXo0v2M">
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-margin-mobile py-base space-y-lg">
+<!-- Profile Overview Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start items-stretch">
+<!-- Left: Hero Card (Asymmetric Layout) -->
+<div class="md:col-span-4 bg-surface-container-lowest rounded-xl p-lg shadow-[0px_4px_20px_rgba(0,0,0,0.05)] flex flex-col items-center text-center">
+<div class="relative w-32 h-32 mb-md">
+<div class="absolute inset-0 bg-primary-fixed opacity-20 rounded-full animate-pulse"></div>
+<img class="relative z-10 w-32 h-32 rounded-full object-cover border-4 border-surface-container-lowest shadow-md" data-alt="A close-up portrait of a cheerful 7-year-old boy with dark hair and bright eyes, wearing a simple green t-shirt. The style is professional commercial photography with high-key lighting, emphasizing health and vitality. The background is a soft-focus clinical setting that feels welcoming and safe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7DR4cT3ukbWqHnci6IMsWTxtw4Lgzucn8bbwGW57oJJd1sunCsrBZkfaju5Wf6zWgkSs-Gu9JwgvHv1zMqHS51BunajbPkEbRmbe2zVL5At3985RIDUsrusuvwrQb2VNgyx72rMvvdXNM_Qng_oIOTklGTrOsezR07gsHvXoxT-3Hfgo3aZ0-ZqWK00jnLx15vffv9DzWTaaLg5c7S8L_FWLtcn9t5vX2ook4Ly1r4KR6SKn_A1rEbk3OKkxhHvKod48nsis0fds">
+</div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Lucas Soares</h2>
+<p class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider mb-lg">Dependente • 7 Anos</p>
+<div class="w-full flex justify-center gap-sm">
+<span class="bg-secondary-container text-on-secondary-container px-md py-xs rounded-full font-label-md text-label-md">Grupo A+</span>
+<span class="bg-tertiary-fixed text-on-tertiary-fixed-variant px-md py-xs rounded-full font-label-md text-label-md">Ativo</span>
+</div>
+</div>
+<!-- Right: Vitals Bento Grid -->
+<div class="md:col-span-8 grid grid-cols-2 gap-gutter h-full flex-col">
+<!-- BPM Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-primary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="bg-secondary-container text-on-secondary-container px-base py-xs rounded-lg font-label-md text-label-md">Normal</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">Batimentos</p>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-lg text-display-lg text-on-surface">78</span>
+<span class="font-body-md text-body-md text-on-surface-variant">bpm</span>
+</div>
+</div>
+<!-- Glucose Card -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-md">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span class="bg-secondary-container text-on-secondary-container px-base py-xs rounded-lg font-label-md text-label-md">Normal</span>
+</div>
+<p class="font-label-md text-label-md text-on-surface-variant">Glicose</p>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-lg text-display-lg text-on-surface">92</span>
+<span class="font-body-md text-body-md text-on-surface-variant">mg/dL</span>
+</div>
+</div>
+<!-- Placeholder / Quick Action -->
+<div class="col-span-2 bg-primary-container text-on-primary-container rounded-xl p-lg shadow-md flex items-center justify-between mt-auto">
+<div>
+<h3 class="font-headline-sm text-headline-sm">Próxima Consulta</h3>
+<p class="font-body-md text-body-md opacity-90">Agendada para 12 de Agosto</p>
+</div>
+<button class="bg-on-primary-container text-primary px-lg py-sm rounded-full font-label-md text-label-md active:scale-95 transition-transform">Ver Detalhes</button>
+</div>
+</div>
+</section>
+<!-- History Timeline Section -->
+<section class="space-y-md">
+<div class="flex justify-between items-center mb-base">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Histórico de Atividades</h3>
+<button class="text-primary font-label-md text-label-md flex items-center gap-xs">
+                    Filtrar <span class="material-symbols-outlined text-[18px]">filter_list</span>
+</button>
+</div>
+<div class="relative space-y-md">
+<!-- Timeline Entry 1 -->
+<div class="timeline-item flex gap-md relative">
+<div class="timeline-line shrink-0 flex flex-col items-center pt-2">
+<div class="w-6 h-6 rounded-full bg-primary-container border-4 border-surface-container-lowest z-10 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+</div>
+<div class="glass-card flex-1 rounded-xl p-md shadow-sm border border-outline-variant/30 space-y-sm">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg font-bold text-on-surface">Consulta Pediátrica</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">10 Jul, 2026</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">person</span>
+                            Dra. Ana Luiza • 14:00
+                        </p>
+<div class="flex gap-sm">
+<button class="flex-1 bg-surface-container-low text-on-surface-variant py-sm rounded-lg font-label-md text-label-md hover:bg-surface-container-high transition-colors">Notas Médicas</button>
+<button class="p-2 rounded-lg bg-surface-container-low text-primary active:scale-95 transition-all">
+<span class="material-symbols-outlined">chat_bubble</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 2 -->
+<div class="timeline-item flex gap-md relative">
+<div class="timeline-line shrink-0 flex flex-col items-center pt-2">
+<div class="w-6 h-6 rounded-full bg-secondary-container border-4 border-surface-container-lowest z-10 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+</div>
+</div>
+<div class="glass-card flex-1 rounded-xl p-md shadow-sm border border-outline-variant/30 space-y-sm">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg font-bold text-on-surface">Vacinação: Reforço Tetravalente</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">05 Jul, 2026</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="bg-secondary-container text-on-secondary-container px-md py-xs rounded-full font-label-md text-label-md inline-flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                                Concluído
+                            </span>
+</div>
+</div>
+</div>
+<!-- Timeline Entry 3 -->
+<div class="timeline-item flex gap-md relative">
+<div class="timeline-line shrink-0 flex flex-col items-center pt-2">
+<div class="w-6 h-6 rounded-full bg-tertiary-container border-4 border-surface-container-lowest z-10 flex items-center justify-center">
+<div class="w-2 h-2 rounded-full bg-on-tertiary-container"></div>
+</div>
+</div>
+<div class="glass-card flex-1 rounded-xl p-md shadow-sm border border-outline-variant/30 space-y-sm">
+<div class="flex justify-between items-start mb-xs">
+<h4 class="font-body-lg font-bold text-on-surface">Exame de Sangue</h4>
+<span class="font-label-md text-label-md text-on-surface-variant">02 Jul, 2026</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-md">Laboratório Central Vitality</p>
+<button class="w-full flex items-center justify-center gap-sm border border-primary text-primary py-sm rounded-lg font-label-md text-label-md hover:bg-primary/5 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">picture_as_pdf</span>
+                            Download PDF (2.4MB)
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Nav Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-center gap-4 items-center px-2 pb-safe pt-2 shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] bg-surface-container-lowest dark:bg-inverse-surface rounded-t-xl h-20"><!-- Dashboard -->
+<a class="flex flex-col items-center justify-center w-20 text-on-surface-variant dark:text-surface-variant py-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</a>
+<!-- Família (Active) -->
+<a class="flex flex-col items-center justify-center w-20 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full py-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: &quot;FILL&quot; 1;">family_restroom</span>
+<span class="font-label-md text-label-md mt-1">Família</span>
+</a>
+<!-- Exames -->
+<a class="flex flex-col items-center justify-center w-20 text-on-surface-variant dark:text-surface-variant py-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">medical_services</span>
+<span class="font-label-md text-label-md mt-1">Exames</span>
+</a>
+<!-- Histórico -->
+<a class="flex flex-col items-center justify-center w-20 text-on-surface-variant dark:text-surface-variant py-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md mt-1">Histórico</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center w-20 text-on-surface-variant dark:text-surface-variant py-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md mt-1">Perfil</span>
+</a></nav>
+<!-- Floating Action Button - Suprimido conforme as regras para tela de detalhes/histórico -->
+<script>
+        // Simple Micro-interaction: Scale effect on cards
+        document.querySelectorAll('.glass-card').forEach(card => {
+            card.addEventListener('touchstart', () => {
+                card.style.transform = 'scale(0.98)';
+                card.style.transition = 'transform 0.15s ease';
+            });
+            card.addEventListener('touchend', () => {
+                card.style.transform = 'scale(1)';
+            });
+        });
+
+        // Theme sync or other interactions can go here
+    </script>
+
+
+</body></html>

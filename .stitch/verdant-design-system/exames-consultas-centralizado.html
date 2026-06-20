@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pt-BR" style=""><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Exames e Consultas - Vitality Healthcare</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "outline-variant": "#bdcabe",
+                "tertiary": "#276749",
+                "surface-container-lowest": "#ffffff",
+                "primary-fixed": "#8cf8b7",
+                "secondary-fixed": "#c3f266",
+                "surface-container-highest": "#e1e3e4",
+                "primary-fixed-dim": "#6fdb9c",
+                "on-secondary-fixed": "#141f00",
+                "error": "#ba1a1a",
+                "tertiary-fixed": "#aff1ca",
+                "on-primary": "#ffffff",
+                "surface": "#f8f9fa",
+                "on-primary-fixed": "#002110",
+                "tertiary-container": "#428160",
+                "inverse-on-surface": "#f0f1f2",
+                "on-surface": "#191c1d",
+                "surface-container-high": "#e7e8e9",
+                "on-surface-variant": "#3e4a41",
+                "on-secondary-fixed-variant": "#364e00",
+                "on-background": "#191c1d",
+                "inverse-surface": "#2e3132",
+                "on-primary-container": "#f6fff5",
+                "on-secondary-container": "#4d6c00",
+                "tertiary-fixed-dim": "#93d5af",
+                "on-error-container": "#93000a",
+                "on-secondary": "#ffffff",
+                "inverse-primary": "#6fdb9c",
+                "background": "#f8f9fa",
+                "secondary-fixed-dim": "#a8d64d",
+                "secondary-container": "#c0f063",
+                "surface-container-low": "#f3f4f5",
+                "primary": "#006a3f",
+                "on-error": "#ffffff",
+                "on-tertiary-container": "#f6fff6",
+                "outline": "#6e7a70",
+                "on-tertiary-fixed": "#002112",
+                "surface-bright": "#f8f9fa",
+                "secondary": "#496800",
+                "surface-container": "#edeeef",
+                "on-tertiary": "#ffffff",
+                "surface-tint": "#006d40",
+                "surface-variant": "#e1e3e4",
+                "on-tertiary-fixed-variant": "#0a5134",
+                "surface-dim": "#d9dadb",
+                "primary-container": "#008650",
+                "on-primary-fixed-variant": "#00522f",
+                "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "16px",
+                "lg": "24px",
+                "base": "4px",
+                "xs": "4px",
+                "margin-mobile": "20px",
+                "md": "16px",
+                "sm": "8px",
+                "xl": "32px",
+                "margin-desktop": "40px"
+            },
+            "fontFamily": {
+                "display-lg-mobile": ["Inter"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"],
+                "label-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-sm": ["Inter"],
+                "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                "display-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #191c1d;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex flex-col items-center">
+<!-- TopAppBar (From JSON) -->
+<header class="bg-background fixed top-0 w-full z-50">
+<div class="flex justify-between items-center px-margin-mobile h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a friendly woman in her 30s with a warm smile, representing Camila. She has soft, natural lighting on her face and is wearing a clean, medical-style white polo shirt. The background is a soft, out-of-focus modern clinic interior with hints of green plants and minimalist wooden furniture, maintaining a modern healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBtuDDYSCTGgwymcJN6iRcy_urBDgeufNMG3rcimsuUFVQcxvqkaEjTUDgXsVeCMjM1FSKso_Yw3IHPsojuBkd5XHX59vi9Zj7tRF9o0ejIMcMWVaFFMYQQGOK4DnFa5fhZT8ZDPSPstlp7QMWBYq261J5W9Ftibe-8EegCAC6s6rqyrj8VIYcAO1xBoovTf9zx7uMve4tkebnH6-6H95SNT_LrBPGAguUUDYks5rODHLt_truJk_nyQfaL5Y8C5mmKTdTt3pvrJ8"/>
+</div>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-background font-bold">Olá Camila</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full text-primary hover:bg-surface-container-high transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="w-full max-w-7xl px-margin-mobile pt-20 pb-32 flex flex-col gap-6">
+<!-- Screen Title Section -->
+<section class="mt-4">
+<h2 class="font-display-lg-mobile text-display-lg-mobile text-on-background">Exames e Consultas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Gerencie sua saúde e agendamentos de forma rápida.</p>
+</section>
+<!-- Quick Actions Bento Grid -->
+<section class="grid grid-cols-2 gap-4 items-stretch">
+<!-- Agendar Exame -->
+<button class="flex flex-col items-start justify-between p-lg bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] active:scale-[0.98] transition-transform text-left border border-transparent hover:border-primary">
+<div class="w-12 h-12 bg-primary-container text-on-primary-container rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Agendar Exame</span>
+</button>
+<!-- Consulta Online -->
+<button class="flex flex-col items-start justify-between p-lg bg-primary text-on-primary rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] active:scale-[0.98] transition-transform text-left">
+<div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>videocam</span>
+</div>
+<span class="font-headline-sm text-headline-sm">Consulta Online</span>
+</button>
+<!-- Exames para Fazer -->
+<button class="flex flex-col items-start justify-between p-lg bg-secondary-container text-on-secondary-container rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] active:scale-[0.98] transition-transform text-left">
+<div class="w-12 h-12 bg-on-secondary-container/10 rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">lab_research</span>
+</div>
+<span class="font-headline-sm text-headline-sm">Exames para Fazer</span>
+</button>
+<!-- Consultar Médico Familiar -->
+<button class="flex flex-col items-start justify-between p-lg bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] active:scale-[0.98] transition-transform text-left border border-transparent hover:border-primary">
+<div class="w-12 h-12 bg-tertiary-fixed text-on-tertiary-fixed rounded-full flex items-center justify-center mb-4">
+<span class="material-symbols-outlined">family_restroom</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface">Consultar Médico Familiar</span>
+</button>
+</section>
+<!-- Próximos Agendamentos -->
+<section class="flex flex-col gap-4 w-full px-0">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Próximos Agendamentos</h3>
+<button class="text-primary font-label-md text-label-md">Ver todos</button>
+</div>
+<!-- Appointment Card -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-secondary flex flex-col gap-4">
+<div class="flex items-start justify-between">
+<div class="flex gap-3">
+<div class="w-12 h-12 rounded-lg bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">health_and_safety</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Consulta de Rotina</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Dr. Alberto Santos (Cardiologista)</p>
+</div>
+</div>
+<div class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full">
+<span class="font-label-md text-label-md">Confirmado</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-surface-container">
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">calendar_today</span>
+<span class="font-label-md text-label-md text-on-surface-variant">24 Out, 2023</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]">schedule</span>
+<span class="font-label-md text-label-md text-on-surface-variant">09:30 AM</span>
+</div>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-1">
+                        Ver Detalhes
+                        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Secondary Appointment Item -->
+<div class="bg-surface-container-lowest rounded-xl p-md shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border-l-4 border-tertiary flex items-center justify-between min-h-[80px]">
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center">
+<span class="material-symbols-outlined">biotech</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-on-surface">Exame de Sangue</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Laboratório Vitality - Unidade Centro</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-label-md text-label-md text-on-surface font-bold">28 Out</span>
+<span class="font-label-md text-label-md text-on-surface-variant">07:00 AM</span>
+</div>
+</div>
+</section>
+<!-- Promotional/Info Card -->
+<section class="relative overflow-hidden rounded-2xl bg-primary-container text-on-primary-container p-lg min-h-[160px] flex flex-col justify-end w-full">
+<div class="relative z-10">
+<h4 class="font-headline-md text-headline-md">Checkout Rápido</h4>
+<p class="font-body-md text-body-md mt-2 max-w-[240px]">Agora você pode pagar seus exames diretamente pelo App com total segurança e praticidade.</p>
+<button class="mt-4 bg-on-primary-container text-primary px-6 py-2 rounded-full font-label-md text-label-md font-bold w-fit shadow-lg transition-transform active:scale-95">
+                    Saiba Mais
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (From JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-center gap-4 items-center px-2 pb-safe pt-2 bg-surface-container-lowest shadow-[0px_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl max-w-7xl mx-auto right-0">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all active:scale-90 duration-200 px-2 w-16" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Família -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all active:scale-90 duration-200 px-2 w-16" href="#">
+<span class="material-symbols-outlined">family_restroom</span>
+<span class="font-label-md text-label-md">Família</span>
+</a><a class="flex flex-col items-center justify-center py-1 hover:text-primary transition-all active:scale-90 duration-200 bg-secondary-container text-on-secondary-container rounded-full px-2 w-16" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-md text-label-md">Exames</span>
+</a>
+<!-- Histórico (ACTIVE STATE for "Exames e Consultas") -->
+<a class="flex flex-col items-center justify-center py-1 active:scale-90 transition-transform duration-200 text-on-surface-variant px-2 w-16" href="#">
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>history</span>
+<span class="font-label-md text-label-md">Histórico</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant py-1 hover:text-primary transition-all active:scale-90 duration-200 px-2 w-16" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Perfil</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for cards
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.classList.add('scale-95');
+            });
+            button.addEventListener('mouseup', () => {
+                button.classList.remove('scale-95');
+            });
+            button.addEventListener('mouseleave', () => {
+                button.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

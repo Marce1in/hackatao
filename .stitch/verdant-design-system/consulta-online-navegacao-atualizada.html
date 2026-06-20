@@ -1,0 +1,362 @@
+<!DOCTYPE html><html class="light" lang="pt-br" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Consulta Online - Vitality Healthcare</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary-fixed": "#8cf8b7",
+                "surface-variant": "#e1e3e4",
+                "primary-container": "#008650",
+                "surface-bright": "#f8f9fa",
+                "primary": "#006a3f",
+                "inverse-surface": "#2e3132",
+                "tertiary-fixed": "#aff1ca",
+                "on-error-container": "#93000a",
+                "inverse-on-surface": "#f0f1f2",
+                "on-secondary-fixed": "#141f00",
+                "on-secondary-container": "#4d6c00",
+                "on-secondary-fixed-variant": "#364e00",
+                "surface": "#f8f9fa",
+                "secondary-container": "#c0f063",
+                "surface-container-low": "#f3f4f5",
+                "surface-container-lowest": "#ffffff",
+                "secondary-fixed-dim": "#a8d64d",
+                "surface-container": "#edeeef",
+                "background": "#f8f9fa",
+                "outline": "#6e7a70",
+                "tertiary-container": "#428160",
+                "on-tertiary-fixed-variant": "#0a5134",
+                "error": "#ba1a1a",
+                "tertiary-fixed-dim": "#93d5af",
+                "on-primary": "#ffffff",
+                "inverse-primary": "#6fdb9c",
+                "secondary-fixed": "#c3f266",
+                "on-tertiary-fixed": "#002112",
+                "error-container": "#ffdad6",
+                "on-surface": "#191c1d",
+                "on-primary-container": "#f6fff5",
+                "tertiary": "#276749",
+                "on-error": "#ffffff",
+                "surface-container-highest": "#e1e3e4",
+                "on-tertiary-container": "#f6fff6",
+                "secondary": "#496800",
+                "on-secondary": "#ffffff",
+                "surface-dim": "#d9dadb",
+                "on-primary-fixed-variant": "#00522f",
+                "on-primary-fixed": "#002110",
+                "surface-tint": "#006d40",
+                "surface-container-high": "#e7e8e9",
+                "on-tertiary": "#ffffff",
+                "on-background": "#191c1d",
+                "primary-fixed-dim": "#6fdb9c",
+                "on-surface-variant": "#3e4a41",
+                "outline-variant": "#bdcabe"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "lg": "24px",
+                "base": "4px",
+                "md": "16px",
+                "gutter": "16px",
+                "margin-desktop": "40px",
+                "sm": "8px",
+                "xs": "4px",
+                "margin-mobile": "20px",
+                "xl": "32px"
+              },
+              "fontFamily": {
+                "display-lg": ["Inter"],
+                "label-md": ["Inter"],
+                "headline-md": ["Inter"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-sm": ["Inter"],
+                "display-lg-mobile": ["Inter"]
+              },
+              "fontSize": {
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md-mobile": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "display-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-doctor-card { box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background fixed top-0 w-full z-50 docked full-width shadow-none border-none">
+<div class="flex justify-between items-center px-margin-mobile h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional medical profile avatar of a woman with dark hair, smiling warmly in a bright clinical setting. The image uses soft studio lighting and a clean, high-key background to convey a sense of wellness and professional healthcare. The color palette features whites and soft primary greens consistent with a modern health app interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS5GuWvjjCxGtUvZ3G7VQ2cl3hlvXfauKxA4pKpq8H7E0ZayIuvduVhcg0kcRK1sZEik1ndv2t9e1bJmH0KLuuF4bAa7Sfs-yQCGL6DTc1Z9T4wWJJoqxGzsnUzhR5jC36smt_y-OoIWsBaLl7SHdodNoN--3KqGd62fJ3FRajULI9QkFa-_XEOKtTkjidZTlJIVEb3We4OWwuW5SpitEzIASoj1m1n81AT_DhqEg2jSKGvwhK8MFOXGrR5Cgp4s7C52kiImA_rwU">
+</div>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-background dark:text-on-background font-bold">Consulta Online</h1>
+</div>
+<button class="text-primary dark:text-inverse-primary hover:bg-surface-container-high dark:hover:bg-surface-container-high rounded-full p-2 transition-all duration-150 active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-7xl px-margin-mobile pt-24 pb-32 flex flex-col gap-6">
+<!-- Search and Hero Section -->
+<section class="flex flex-col gap-md">
+<!-- Specialty Filters -->
+<!-- Doctor Card 4 -->
+<div class="bg-surface-container-lowest rounded-xl p-md flex flex-col gap-md active-doctor-card transition-all hover:scale-[1.01] border border-transparent hover:border-outline-variant">
+<div class="flex gap-md">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img alt="Dr. André Santos" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9ZbCNYv6biY9jLvz63FosRzDvKQHEqEEao84o_YDbNthvMjmLUs9HZShmrWOfFxz5u2tbOqyEjXVWii2Ujy8dmfSMGEPbpbRut5BsDeczo_nVyIThDaUK2wXm2M02oYiViHJFe7dPMeT2P4D_lBCyfohf0Fk1tpNkJFXnsq8fV6nH7aeikUswS3ZKdj5x4n59Ft3qyyG8NhwFU9PlfyCZg2cCOmzCKhSnB7D5FCRhaXukra27PeSl_dMr4DrdgQharNHdS5LWP7E">
+<div class="absolute bottom-1 right-1 w-3 h-3 bg-secondary-fixed rounded-full border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-on-surface leading-tight">Dr. André Santos</h3>
+<p class="font-label-md text-on-surface-variant">Clínico Geral • CRM 11223</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-label-md text-on-secondary-container">4.7</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#c3f266]"></span>
+<span class="font-label-md text-secondary text-[11px] font-bold uppercase tracking-wider">Disponível Agora</span>
+</div>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-headline-sm text-[14px] flex items-center justify-center gap-2 transition-all active:scale-95">Consultar Agora</button>
+</div>
+</div>
+<!-- Doctor Card 5 -->
+<div class="bg-surface-container-lowest rounded-xl p-md flex flex-col gap-md active-doctor-card transition-all hover:scale-[1.01] border border-transparent hover:border-outline-variant">
+<div class="flex gap-md">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img alt="Dra. Juliana Costa" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrcIZ19CbfjxBqotzbRSnANeVIDxH7qcTYrgrGSMN5RhGfauzl6zHBINqY9CIRT61SjJMSGEhuravNX5AtLlJ_q37_Deon-o90440qGV2rA0ZXwmbNJ0xQdwLknLDJj80M4qqfZ3PbIaDdFCQ1eVTFZUSblMCsAwT1QZp4uGAD4LdC4YgtPWgtCA49So6DwCPVm4kL7OzCNrp9rluhWKzfkLNumvxdnVSsvFaLZIERXcvSNa7r5I5tMddMVJUfQXMWWfx2hvzBf3s">
+<div class="absolute bottom-1 right-1 w-3 h-3 bg-secondary-fixed rounded-full border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-on-surface leading-tight">Dra. Juliana Costa</h3>
+<p class="font-label-md text-on-surface-variant">Clínico Geral • CRM 44556</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-label-md text-on-secondary-container">4.9</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#c3f266]"></span>
+<span class="font-label-md text-secondary text-[11px] font-bold uppercase tracking-wider">Disponível Agora</span>
+</div>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-headline-sm text-[14px] flex items-center justify-center gap-2 transition-all active:scale-95">Consultar Agora</button>
+</div>
+</div>
+<!-- Doctor Card 6 -->
+<div class="bg-surface-container-lowest rounded-xl p-md flex flex-col gap-md active-doctor-card transition-all hover:scale-[1.01] border border-transparent hover:border-outline-variant">
+<div class="flex gap-md">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img alt="Dr. Felipe Rocha" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkWk3ZbE2c8X29vVsGU7AX2scjQGwuWUwrSPOUDYyER9Gp5yVlrdZ2XNGFXYVV657iq4-gBupP_NsJ_oTYm4-qh0WllHKZFZfIu75YSYifjNiTufsPN6hDVH8bxiLcAoA2AdIhPqhZVvsh3rJrrsrapmdptyutpO5EWf1CYHheEN1Pc9Nh970vp121wgf7PbY5Grynw0JjJXVozvf4VsUuBfLy0fddzacPhGrhngPxkkL_N4aHxV76WgUyCjKp5bUx7dNKUHdtmQM">
+<div class="absolute bottom-1 right-1 w-3 h-3 bg-secondary-fixed rounded-full border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-on-surface leading-tight">Dr. Felipe Rocha</h3>
+<p class="font-label-md text-on-surface-variant">Clínico Geral • CRM 77889</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-label-md text-on-secondary-container">4.8</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#c3f266]"></span>
+<span class="font-label-md text-secondary text-[11px] font-bold uppercase tracking-wider">Disponível Agora</span>
+</div>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-headline-sm text-[14px] flex items-center justify-center gap-2 transition-all active:scale-95">Consultar Agora</button>
+</div>
+</div></section>
+<!-- Doctor List Title -->
+<div class="flex justify-between items-center">
+</div>
+<!-- Vertical List of Doctors -->
+<section class="flex flex-col gap-md">
+<!-- Doctor Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-md flex flex-col gap-md active-doctor-card transition-all hover:scale-[1.01] border border-transparent hover:border-outline-variant">
+<div class="flex gap-md">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a smiling female doctor in her 40s wearing a white lab coat and a stethoscope. She is positioned in a bright, modern clinic with soft green plants in the background. The lighting is soft and airy, emphasizing trust and expertise in a professional medical context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4JXwUD3gNnCv6BVqRiHcnefRyI-9zkVW4xehcg6JjaPHWjHvhokCXQmEy-XZiwyVmNqDkaUVKpD1lF55R_gvQX5E9oSJVyk3LdlQ_1W2GTNKHVFSdcyG2bv6nU-m7cNOFbCKkl9JAEj52MFTt33DTUo27quNESvPQ6bxhq_4aGCPviXj9aydr16cuMKul9jnAOidDWArSdC6pVshSnh5YmFImoDhVvWsiumU5lm8v7s70CK1Xal-wzOy2qov8YJSNaPAewySjKoo">
+<div class="absolute bottom-1 right-1 w-3 h-3 bg-secondary-fixed rounded-full border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-on-surface leading-tight">Dra. Beatriz Santos</h3>
+<p class="font-label-md text-on-surface-variant">Clínico Geral • CRM 12345</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" data-icon="star" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-label-md text-on-secondary-container">4.9</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#c3f266]"></span>
+<span class="font-label-md text-secondary text-[11px] font-bold uppercase tracking-wider">Disponível Agora</span>
+</div>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-headline-sm text-[14px] flex items-center justify-center gap-2 transition-all active:scale-95">
+                        Consultar Agora
+                    </button>
+</div>
+</div>
+<!-- Doctor Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-md flex flex-col gap-md active-doctor-card transition-all hover:scale-[1.01] border border-transparent hover:border-outline-variant">
+<div class="flex gap-md">
+<div class="relative w-20 h-20 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A portrait of a confident male doctor with glasses, wearing a professional blue shirt under a white lab coat. He is sitting in a minimalist office with clean lines and warm wooden accents. The mood is calm and reliable, using a color palette of soft greens and neutral greys to reflect a modern healthcare environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFOAcqfbV0FAlj0YsDuZp99misKIR5zn1JG_9EDORzpqYp3fRD97DhLq-azPHVnwh0O8hGqBB8Goy7ZLBOX5dbR0bzPJZwO-oHP---au4F8_SWaZw973egeGsKcBnM0jhLP34W_CQxBYHoSzL5ToUeJ5m4ZT3fFRkNXufCbyDbZO-ou7L9SjlbG4Wcwpe5338osNQyrW8LrTLSpZNeYWA1Jm3-2a4Raq7MHXCFbmjtdq2bWYWhsYd2xHL8CHHJnKZN1JKEpA4cKo8">
+<div class="absolute bottom-1 right-1 w-3 h-3 bg-secondary-fixed rounded-full border-2 border-white shadow-sm"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-headline-sm text-on-surface leading-tight">Dr. Ricardo Almeida</h3>
+<p class="font-label-md text-on-surface-variant">Clínico Geral • CRM 98765</p>
+</div>
+<div class="flex items-center gap-1 bg-secondary-container px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" data-icon="star" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+<span class="font-label-md text-on-secondary-container">4.8</span>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed shadow-[0_0_8px_#c3f266]"></span>
+<span class="font-label-md text-secondary text-[11px] font-bold uppercase tracking-wider">Disponível Agora</span>
+</div>
+</div>
+</div>
+<div class="flex gap-sm">
+<button class="flex-1 h-12 rounded-xl bg-primary text-on-primary font-headline-sm text-[14px] flex items-center justify-center gap-2 transition-all active:scale-95">
+                        Consultar Agora
+                    </button>
+</div>
+</div>
+<!-- Doctor Card 3 -->
+<!-- Appointment Summary Card (Bento Style) -->
+<!-- Doctor Card 4 -->
+<!-- Doctor Card 5 -->
+<!-- Doctor Card 6 -->
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe pt-2 bg-surface-container-lowest dark:bg-inverse-surface rounded-t-xl shadow-md">
+<div class="flex items-center w-full max-w-7xl mx-auto py-2 justify-center gap-2">
+<!-- Dashboard -->
+<button class="flex flex-col items-center justify-center px-4 py-1 hover:text-primary dark:hover:text-inverse-primary transition-transform duration-200 active:scale-90 bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md mt-1">Dashboard</span>
+</button>
+<!-- Família -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined" data-icon="family_restroom">family_restroom</span>
+<span class="font-label-md text-label-md mt-1">Família</span>
+</button><button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined" data-icon="medical_services" style="opacity: 0;">medical_services</span>
+<span class="font-label-md text-label-md mt-1">Exames</span>
+</button>
+<!-- Histórico -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md mt-1">Histórico</span>
+</button>
+<!-- Perfil (Active based on context of 'Online Consultation' being a user-focused activity or we can assume Dashboard/Home is the primary entry) -->
+<!-- Actually, let's pick "Dashboard" as active as it's often the home for these actions in healthcare apps -->
+<script>
+                // Active logic for Dashboard (as a placeholder for main activity)
+                const items = document.querySelectorAll('nav button');
+                items[0].classList.remove('text-on-surface-variant', 'dark:text-surface-variant');
+                items[0].classList.add('bg-secondary-container', 'dark:bg-secondary', 'text-on-secondary-container', 'dark:text-on-secondary', 'rounded-full');
+            </script>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary transition-transform duration-200 active:scale-90">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md mt-1">Perfil</span>
+</button>
+</div>
+</nav>
+<!-- FAB (Contextual for Online Consultation: 'Start New Quick Chat' or 'Emergency') -->
+<script>
+        // Micro-interaction for search bar focus
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-2', 'ring-primary/20');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-2', 'ring-primary/20');
+        });
+
+        // Filter chips interaction
+        const filterButtons = document.querySelectorAll('.no-scrollbar button');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-primary', 'text-on-primary');
+                    b.classList.add('bg-surface-container-high', 'text-on-surface-variant');
+                });
+                btn.classList.add('bg-primary', 'text-on-primary');
+                btn.classList.remove('bg-surface-container-high', 'text-on-surface-variant');
+            });
+        });
+    </script>
+
+
+
+
+</body></html>

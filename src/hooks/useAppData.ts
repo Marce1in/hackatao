@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { fetchHealthSnapshot } from '../api/mockHealthApi';
-import type { HealthSnapshot } from '../types/health';
+import { fetchMockAppData } from '../api/mockAppApi';
+import type { AppData } from '../types/appData';
 
-const REFRESH_INTERVAL_MS = 15_000;
-
-export const useHealthSnapshot = () => {
-  const [data, setData] = useState<HealthSnapshot | null>(null);
+export const useAppData = () => {
+  const [data, setData] = useState<AppData | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,11 +17,10 @@ export const useHealthSnapshot = () => {
     }
 
     try {
-      const snapshot = await fetchHealthSnapshot();
-      setData(snapshot);
+      setData(await fetchMockAppData());
       setError(null);
     } catch {
-      setError('Mock API indisponivel');
+      setError('Nao foi possivel carregar o JSON mock.');
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -32,12 +29,6 @@ export const useHealthSnapshot = () => {
 
   useEffect(() => {
     void load();
-
-    const interval = setInterval(() => {
-      void load(true);
-    }, REFRESH_INTERVAL_MS);
-
-    return () => clearInterval(interval);
   }, [load]);
 
   return {

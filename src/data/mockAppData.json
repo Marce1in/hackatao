@@ -1,0 +1,219 @@
+{
+  "user": {
+    "firstName": "Camila",
+    "name": "Camila Soares Da Silva",
+    "plan": "Premium",
+    "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBVYWPumkrQs6s--xmuefgosX08TGCXJLzw96MrZA6tySzNn77wzcpWT5roqkravBcAHaFWJucajgClYmig7OlUMv8J7TwEy_FVyHJTejdFnj7NVnSo2rAL0xhnBYzp9Upz9SQeG9jeRU3c4vgPIyH1RVHhlpA_nHp1gei5wB70tkIrycNMm792-zeClOtvgmUiTYWZvdsihbR6LE7Ik5tZb8Iltmfn81_B62xDl76CTFjncryYbd1F-58wndaOU6PI-ob702_Vn5g"
+  },
+  "dashboard": {
+    "measurement": {
+      "time": "12:00",
+      "status": "Sinais vitais normais",
+      "metrics": [
+        {
+          "label": "BPM",
+          "unit": "bpm",
+          "value": 86
+        },
+        {
+          "label": "Glicose",
+          "unit": "mg/dL",
+          "value": 86
+        }
+      ]
+    },
+    "quickActions": [
+      {
+        "id": "plan",
+        "label": "Plano",
+        "tone": "primaryContainer",
+        "icon": "plan"
+      },
+      {
+        "id": "finance",
+        "label": "Finanças",
+        "tone": "primary",
+        "icon": "finance"
+      },
+      {
+        "id": "family",
+        "label": "Família",
+        "tone": "primary",
+        "icon": "family"
+      },
+      {
+        "id": "exam",
+        "label": "Exames",
+        "tone": "primaryContainer",
+        "icon": "exam"
+      }
+    ],
+    "recentHistory": [
+      {
+        "id": "checkin",
+        "date": "8 Julho, 2026",
+        "time": "10:45",
+        "title": "Rua Almirante Barroso, 2297, Pelotas, RS",
+        "detail": "Clínica Sorriso",
+        "dotTone": "secondary",
+        "facility": "Clínica Sorriso",
+        "tag": "Check-in"
+      },
+      {
+        "id": "glicemia",
+        "date": "7 Julho, 2026",
+        "time": "16:30",
+        "title": "Exame de Glicemia Concluído",
+        "detail": "",
+        "dotTone": "primary"
+      },
+      {
+        "id": "visit",
+        "date": "5 Julho, 2026",
+        "time": "09:15",
+        "title": "Visita domiciliar: Dr. André Santos",
+        "detail": "",
+        "dotTone": "tertiary",
+        "imageUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD-LOgih1RlhvlIhmLgLTdwyNN3KIVemexkm5SoL3LC4sD4z3ogPhmmxXsImHz2C9QF5b9zcOh29Xl2iksyd716pznZB9KFyUSx8-Fqwlagw2TIOdjTsDBd4BSoXS6cShSi44-o81hcXRiNzd-2txKe91HEYUmsOfrZcTUiSpKcHoS50fhqTA7jhSiKI813MrXSNJdQKa8wjo4_mQXMI0dYdvik2h0MsGAiX5a3qi0sDswq1PJw_B_tf_TO8V0OeVeXHeMRxbe4j0o"
+      }
+    ]
+  },
+  "family": {
+    "primaryMember": {
+      "name": "Camila Soares Da Silva",
+      "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuADjy3MXURzA1n8zdqD11qo8HLDMNgmMQO2bOyQuX78Lm4h-O3cJjTo14FR4uSBTrfqsQqZU-0G0NWWsvbYVYMrJECJcfXf7S_F4ToWwOndmHZneTWKrKQ9YVQ8jhCBfLi2DczR7FUA6idUV_G2X_W19GU7ATBmENQQ7Yj8rRHsGoiUfjwqpdLRcBZ9bkcnUQh2-MsKQkTM7zjZvkd-zAADXhYaqR9TwcjORw-X0vqOjaoFh0LmXJ95AHqoB9iwTlJCeHdJCo7heLE",
+      "plan": "Assinante",
+      "lastMeasurement": "12:00",
+      "metrics": [
+        {
+          "label": "BPM",
+          "unit": "bpm",
+          "value": 86
+        },
+        {
+          "label": "Glicose",
+          "unit": "mg/dL",
+          "value": 86
+        }
+      ]
+    },
+    "dependents": [
+      {
+        "id": "ricardo",
+        "name": "Ricardo Silva",
+        "status": "attention",
+        "statusLabel": "Atenção necessária"
+      },
+      {
+        "id": "lucas",
+        "name": "Lucas Soares",
+        "avatarUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA21NVqlbZvXGnXfUOjcxheVHC3X2zxktxM2SyuIbCX-gn1s48pOFn6emP9YnXi5CiSKZPXf7bUG-jKFhRC-wC3L5P8cz3Hfjvgc9QVlHJqws9VD4Ev4V3dFBIdSI5gne2_L3sGPxXbpAoWpfUINWXCJ8gt9Nr6z9l1EdthEvVxTsPtqLZyJSQYYYxjv7jqB-14hz2cqGX_znXmPSNYBjdRl0hC6M8cxKgH2OqFa9ngicrpi2TDTyEY8JuJcXxLGf7qClvx6pgnoGc",
+        "status": "normal",
+        "statusLabel": "Monitoramento normal"
+      },
+      {
+        "id": "helena",
+        "name": "Helena Soares",
+        "status": "normal",
+        "statusLabel": "Monitoramento normal"
+      }
+    ],
+    "summary": [
+      {
+        "id": "total",
+        "icon": "group",
+        "label": "Total Família",
+        "value": "4 Membros",
+        "tone": "secondary"
+      },
+      {
+        "id": "plan",
+        "icon": "shield",
+        "label": "Plano",
+        "value": "Premium",
+        "tone": "tertiary"
+      }
+    ]
+  },
+  "history": {
+    "filters": ["Tudo", "Medições", "Exames Laboratoriais", "Vacinas"],
+    "groups": [
+      {
+        "id": "jul-8",
+        "date": "8 Julho, 2026",
+        "dotTone": "secondary",
+        "cards": [
+          {
+            "id": "checkup",
+            "icon": "heart",
+            "title": "Check-up Matinal",
+            "trailing": "08:30",
+            "tone": "secondary",
+            "metrics": [
+              {
+                "label": "BPM",
+                "value": "72"
+              },
+              {
+                "label": "Glicose",
+                "value": "94 mg/dL"
+              }
+            ]
+          },
+          {
+            "id": "blood",
+            "icon": "document",
+            "title": "Exame de Sangue - Lab ABC",
+            "trailing": "PDF • 2.4MB",
+            "subtitle": "Resultados de Colesterol e Triglicérides",
+            "tone": "tertiary"
+          }
+        ]
+      },
+      {
+        "id": "jul-5",
+        "date": "5 Julho, 2026",
+        "dotTone": "outline",
+        "cards": [
+          {
+            "id": "flu",
+            "icon": "vaccine",
+            "title": "Reforço Influenza",
+            "trailing": "CONCLUÍDO",
+            "subtitle": "Unidade Básica de Saúde Central",
+            "status": "done",
+            "tone": "primary"
+          },
+          {
+            "id": "cardio",
+            "icon": "medical",
+            "title": "Consulta Cardiologista",
+            "trailing": "14:00",
+            "subtitle": "Dr. Roberto Mendes - Clínica Vida",
+            "tone": "surface"
+          }
+        ]
+      }
+    ],
+    "insights": [
+      {
+        "id": "bpm",
+        "icon": "trend",
+        "label": "Média BPM",
+        "value": "68",
+        "tone": "secondary"
+      },
+      {
+        "id": "glucose",
+        "icon": "metrics",
+        "label": "Glicose Estável",
+        "value": "95%",
+        "tone": "tertiary"
+      }
+    ]
+  },
+  "profile": {
+    "careTeam": "Clínica Vida",
+    "nextExam": "Hemograma Completo"
+  }
+}

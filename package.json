@@ -15,14 +15,30 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "@vercel/sdk": "^1.28.1",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "typecheck": "tsc --noEmit"
+    "build:web": "expo export --platform web --output-dir dist",
+    "typecheck": "tsc --noEmit",
+    "env:local:waydroid": "node scripts/configure-app-env.mjs --mode local --api-url http://192.168.240.1:3000",
+    "env:prod": "node scripts/configure-app-env.mjs --mode prod",
+    "expo:android": "expo start --android",
+    "android:prebuild": "expo prebuild --platform android",
+    "android:native": "expo run:android",
+    "android:run": "expo run:android",
+    "android:apk": "npm run android:prebuild && cd android && NODE_ENV=production ./gradlew assembleRelease",
+    "android:apk:waydroid": "npm run env:local:waydroid && npm run android:apk",
+    "android:apk:prod": "npm run env:prod && npm run android:apk",
+    "android:waydroid": "npm run android:apk && waydroid app install android/app/build/outputs/apk/release/app-release.apk && waydroid show-full-ui && waydroid app launch com.hackatao.care",
+    "android:waydroid:local": "npm run android:apk:waydroid && waydroid app install android/app/build/outputs/apk/release/app-release.apk && waydroid show-full-ui && waydroid app launch com.hackatao.care",
+    "android:waydroid:prod": "npm run android:apk:prod && waydroid app install android/app/build/outputs/apk/release/app-release.apk && waydroid show-full-ui && waydroid app launch com.hackatao.care",
+    "android:genymotion": "npm run android:apk && adb install -r android/app/build/outputs/apk/release/app-release.apk && adb shell monkey -p com.hackatao.care 1",
+    "adb:devices": "adb devices -l"
   },
   "private": true
 }

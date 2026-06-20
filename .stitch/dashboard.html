@@ -1,0 +1,305 @@
+<!DOCTYPE html><html class="light" lang="pt-br" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>HealthCare Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#93d5af",
+                        "surface-container-highest": "#e1e3e4",
+                        "surface-tint": "#006d40",
+                        "inverse-primary": "#6fdb9c",
+                        "outline-variant": "#bdcabe",
+                        "on-tertiary-fixed-variant": "#0a5134",
+                        "surface-container-high": "#e7e8e9",
+                        "primary-container": "#008650",
+                        "tertiary": "#276749",
+                        "on-secondary-fixed-variant": "#364e00",
+                        "inverse-surface": "#2e3132",
+                        "surface-bright": "#f8f9fa",
+                        "on-error": "#ffffff",
+                        "on-surface": "#191c1d",
+                        "on-primary-fixed": "#002110",
+                        "surface-container-low": "#f3f4f5",
+                        "tertiary-fixed": "#aff1ca",
+                        "background": "#f8f9fa",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-secondary-container": "#4d6c00",
+                        "on-background": "#191c1d",
+                        "surface-dim": "#d9dadb",
+                        "primary": "#006a3f",
+                        "on-primary-container": "#f6fff5",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#428160",
+                        "on-tertiary-fixed": "#002112",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e1e3e4",
+                        "surface": "#f8f9fa",
+                        "outline": "#6e7a70",
+                        "on-surface-variant": "#3e4a41",
+                        "secondary-fixed-dim": "#a8d64d",
+                        "secondary": "#496800",
+                        "on-tertiary-container": "#f6fff6",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#c0f063",
+                        "primary-fixed": "#8cf8b7",
+                        "primary-fixed-dim": "#6fdb9c",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#c3f266",
+                        "on-secondary-fixed": "#141f00",
+                        "surface-container": "#edeeef",
+                        "on-primary-fixed-variant": "#00522f",
+                        "inverse-on-surface": "#f0f1f2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "base": "4px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "32px",
+                        "margin-mobile": "20px",
+                        "sm": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "display-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        /* Custom scrollbar for better mobile feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e1e3e4;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center overflow-x-hidden pb-24">
+<!-- Top AppBar (from JSON) -->
+<header class="bg-background dark:bg-background fixed top-0 left-0 w-full z-50 shadow-none">
+<div class="flex justify-between items-center px-margin-mobile h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-fixed">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of Camila, a young Brazilian woman with a friendly expression. She is wearing a soft cream-colored linen shirt in a bright, modern clinic environment. The lighting is soft and natural, emphasizing a clean and trustworthy healthcare atmosphere with a blurred medical background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVYWPumkrQs6s--xmuefgosX08TGCXJLzw96MrZA6tySzNn77wzcpWT5roqkravBcAHaFWJucajgClYmig7OlUMv8J7TwEy_FVyHJTejdFnj7NVnSo2rAL0xhnBYzp9Upz9SQeG9jeRU3c4vgPIyH1RVHhlpA_nHp1gei5wB70tkIrycNMm792-zeClOtvgmUiTYWZvdsihbR6LE7Ik5tZb8Iltmfn81_B62xDl76CTFjncryYbd1F-58wndaOU6PI-ob702_Vn5g">
+</div>
+<h1 class="font-headline-md-mobile text-headline-md-mobile text-on-background dark:text-on-background font-bold">Olá Camila</h1>
+</div>
+<button class="text-primary dark:text-inverse-primary w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="w-full max-w-7xl px-margin-mobile pt-20 flex flex-col gap-lg">
+<!-- Health Status Banner (Vibrant Lime/Secondary Container) -->
+<section class="bg-secondary-container text-on-secondary-container p-lg rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] relative overflow-hidden">
+<div class="absolute -right-6 -top-6 opacity-10">
+<span class="material-symbols-outlined text-[120px]">ecg_heart</span>
+</div>
+<div class="flex flex-col gap-md relative z-10">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md opacity-80 uppercase tracking-wider">Última Medição</span>
+<span class="font-label-md text-label-md font-bold">12:00</span>
+</div>
+<div class="grid grid-cols-2 gap-md items-center">
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase opacity-80">BPM</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg-mobile text-display-lg-mobile">86</span>
+<span class="font-label-md text-label-md">bpm</span>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md uppercase opacity-80">Glicose</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg-mobile text-display-lg-mobile">86</span>
+<span class="font-label-md text-label-md">mg/dL</span>
+</div>
+</div>
+</div>
+<div class="mt-2 flex items-center gap-2 px-3 py-1 bg-on-secondary-container/10 rounded-full w-fit">
+<span class="w-2 h-2 bg-on-secondary-container rounded-full animate-pulse"></span>
+<span class="font-label-md text-label-md font-medium">Sinais vitais normais</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Quick Actions -->
+<section class="grid grid-cols-2 gap-gutter">
+<button class="flex flex-col items-center justify-center gap-sm bg-primary-container text-on-primary-container p-lg rounded-xl shadow-sm aspect-square active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-4xl">medical_services</span>
+<span class="font-headline-sm text-headline-sm text-on-primary-container">Plano</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-sm bg-primary text-on-primary p-lg rounded-xl shadow-sm aspect-square active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-4xl">payments</span>
+<span class="font-headline-sm text-headline-sm text-on-primary">Finanças</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-sm bg-primary text-on-primary p-lg rounded-xl shadow-sm aspect-square active:scale-95 transition-transform duration-150"><span class="material-symbols-outlined text-4xl">family_restroom</span><span class="font-headline-sm text-headline-sm text-on-primary">Família</span></button>
+<button class="flex flex-col items-center justify-center gap-sm bg-primary-container text-on-primary-container p-lg rounded-xl shadow-sm aspect-square active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-4xl">description</span>
+<span class="font-headline-sm text-headline-sm text-on-primary-container">Exames</span>
+</button>
+</section>
+<!-- Timeline Section: Recent History -->
+<section class="flex flex-col gap-md mb-8">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Histórico Recente</h2>
+<button class="text-primary font-label-md text-label-md underline underline-offset-4">Ver tudo</button>
+</div>
+<div class="relative pl-8 flex flex-col gap-lg">
+<!-- Vertical Timeline Line -->
+<div class="absolute left-[11px] top-2 bottom-2 w-0.5 bg-outline-variant/50"></div>
+<!-- Timeline Item 1 -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1.5 w-[14px] h-[14px] bg-secondary border-2 border-background rounded-full z-10 shadow-sm"></div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-container hover:border-primary/20 transition-colors">
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-bold text-on-surface">8 Julho, 2026</span>
+<span class="font-label-md text-label-md text-on-surface-variant">10:45</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant flex gap-2">
+<span class="material-symbols-outlined text-[18px]">location_on</span>
+                                Rua Almirante Barroso, 2297, Pelotas, RS
+                            </p>
+<div class="mt-2 flex gap-2 items-center">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] rounded uppercase font-bold tracking-tight">Check-in</span>
+<span class="text-on-surface-variant text-[12px]">Clínica Sorriso</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1.5 w-[14px] h-[14px] bg-primary border-2 border-background rounded-full z-10 shadow-sm"></div>
+<div class="bg-surface-container-lowest p-md rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-container hover:border-primary/20 transition-colors">
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-start">
+<span class="font-body-md text-body-md font-bold text-on-surface">7 Julho, 2026</span>
+<span class="font-label-md text-label-md text-on-surface-variant">16:30</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant flex gap-2">
+<span class="material-symbols-outlined text-[18px]">medical_information</span>
+                                Exame de Glicemia Concluído
+                            </p>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 (Map Integration) -->
+<div class="relative group">
+<div class="absolute -left-[27px] top-1.5 w-[14px] h-[14px] bg-tertiary border-2 border-background rounded-full z-10 shadow-sm"></div>
+<div class="bg-surface-container-lowest overflow-hidden rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] border border-surface-container">
+<div class="p-md">
+<div class="flex justify-between items-start mb-2">
+<span class="font-body-md text-body-md font-bold text-on-surface">5 Julho, 2026</span>
+<span class="font-label-md text-label-md text-on-surface-variant">09:15</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-3">Visita domiciliar: Dr. André Santos</p>
+</div>
+<div class="w-full h-32 relative">
+<img class="w-full h-full object-cover grayscale brightness-105 contrast-75 opacity-90" data-alt="A clean, minimalist digital map view of Pelotas, Brazil, focusing on the area around Rua Almirante Barroso. The map uses a soft medical-themed color palette with muted greens and grays. A small, vibrant lime marker indicates a specific medical clinic location. The visual style is modern, professional, and clear." data-location="Pelotas, Brazil" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-LOgih1RlhvlIhmLgLTdwyNN3KIVemexkm5SoL3LC4sD4z3ogPhmmxXsImHz2C9QF5b9zcOh29Xl2iksyd716pznZB9KFyUSx8-Fqwlagw2TIOdjTsDBd4BSoXS6cShSi44-o81hcXRiNzd-2txKe91HEYUmsOfrZcTUiSpKcHoS50fhqTA7jhSiKI813MrXSNJdQKa8wjo4_mQXMI0dYdvik2h0MsGAiX5a3qi0sDswq1PJw_B_tf_TO8V0OeVeXHeMRxbe4j0o">
+<div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (from JSON) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe pt-2 bg-surface-container-lowest dark:bg-inverse-surface shadow-md rounded-t-xl h-20">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-4 py-1 active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined active-nav-icon" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<!-- Família -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">family_restroom</span>
+<span class="font-label-md text-label-md">Família</span>
+</a>
+<!-- Histórico -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-label-md text-label-md">Histórico</span>
+</a>
+<!-- Perfil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant px-4 py-1 hover:text-primary dark:hover:text-inverse-primary active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-md text-label-md">Perfil</span>
+</a>
+</nav>
+<!-- Floating Action Button (Optional for context) -->
+
+<script>
+        // Micro-interactions for buttons
+        document.querySelectorAll('button, a').forEach(btn => {
+            btn.addEventListener('touchstart', () => {
+                btn.style.transform = 'scale(0.95)';
+            });
+            btn.addEventListener('touchend', () => {
+                btn.style.transform = 'scale(1)';
+            });
+        });
+        
+        // Simple page entry animation
+        window.addEventListener('load', () => {
+            document.querySelectorAll('section').forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'all 0.5s ease-out';
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body></html>

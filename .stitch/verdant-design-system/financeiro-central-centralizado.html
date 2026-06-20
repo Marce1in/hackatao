@@ -1,0 +1,362 @@
+<!DOCTYPE html><html class="light" lang="pt-br" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Vitality Financeiro</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#2d3133",
+                    "outline": "#8f7066",
+                    "inverse-primary": "#ffb59c",
+                    "primary": "#ab3600",
+                    "primary-fixed": "#ffdbcf",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#004b70",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#001e30",
+                    "secondary": "#565e74",
+                    "on-surface-variant": "#5b4138",
+                    "outline-variant": "#e3bfb3",
+                    "secondary-fixed": "#dae2fd",
+                    "surface": "#f7f9fb",
+                    "on-secondary-fixed-variant": "#3f465c",
+                    "surface-variant": "#e0e3e5",
+                    "primary-fixed-dim": "#ffb59c",
+                    "surface-container-low": "#f2f4f6",
+                    "on-secondary-fixed": "#131b2e",
+                    "surface-container-high": "#e6e8ea",
+                    "on-primary-fixed-variant": "#832700",
+                    "tertiary-container": "#009de4",
+                    "surface-container": "#eceef0",
+                    "on-primary": "#ffffff",
+                    "on-background": "#191c1e",
+                    "background": "#f7f9fb",
+                    "surface-container-highest": "#e0e3e5",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-primary-container": "#561700",
+                    "surface-tint": "#ab3600",
+                    "on-surface": "#191c1e",
+                    "secondary-fixed-dim": "#bec6e0",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#390c00",
+                    "on-tertiary-container": "#00304a",
+                    "tertiary-fixed": "#cae6ff",
+                    "secondary-container": "#dae2fd",
+                    "on-error-container": "#93000a",
+                    "tertiary": "#006493",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#8dcdff",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-container": "#5c647a",
+                    "surface-bright": "#f7f9fb",
+                    "primary-container": "#ff5f1f",
+                    "surface-dim": "#d8dadc"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "8px",
+                    "container-max": "1280px",
+                    "margin-desktop": "32px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-xl-mobile": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "numeric-data": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "headline-xl-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "numeric-data": ["16px", {"lineHeight": "24px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #f7f9fb; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="text-on-surface bg-background mb-24">
+<!-- TopAppBar -->
+<header class="bg-surface sticky top-0 z-40 flex justify-between items-center w-full px-margin-mobile py-base md:px-margin-desktop">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a smiling middle-aged woman in a clean medical office setting. The lighting is bright and natural, emphasizing a trustworthy and professional healthcare environment. The colors are muted and professional with subtle orange accents in the background decor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyvMQvdtnO8OMXl-eXGHHZeqfBoF_VSDc1rHJhb0OxMP5MRd4grzXdLaDEcSoKQyZMRe8FQPA0OwxJWHyI9c75F3n9zt-0xUFCtxQ0Fz3nofUuYOXtTxhDdU6tMuvc4d0-zkAkzr9rQHCsVSfbQq7gsyQhFzZlHZ6L35ApBGsAzaMhmRlxDIBUlsrJciMHRh-HcIyfj4nDzwaAlky72AAknmxXVi6kO8BA2yNyIaj6I1-Id6ExXjujVyy8uWPLMi7MBSj-Blhi2n0">
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">Financeiro</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-high transition-colors active:opacity-80">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-4">
+<!-- Header: Balance Card -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-margin-desktop">
+<!-- Quick Actions -->
+<div class="flex flex-col justify-between gap-3">
+<button class="flex items-center gap-4 bg-surface border border-outline-variant p-4 rounded-xl hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+</div>
+<div class="text-left">
+<p class="font-headline-lg text-[16px] leading-tight text-primary">Pagar Fatura</p>
+<p class="font-body-sm text-body-sm text-secondary">Boletos e convênios</p>
+</div>
+</button>
+<button class="flex items-center gap-4 bg-surface border border-outline-variant p-4 rounded-xl hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="sync_alt">sync_alt</span>
+</div>
+<div class="text-left">
+<p class="font-headline-lg text-[16px] leading-tight text-secondary">Transferir</p>
+<p class="font-body-sm text-body-sm text-secondary">Envio rápido PIX</p>
+</div>
+</button>
+<button class="flex items-center gap-4 bg-surface border border-outline-variant p-4 rounded-xl hover:bg-surface-container-low transition-all active:scale-[0.98]">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+</div>
+<div class="text-left">
+<p class="font-headline-lg text-[16px] leading-tight text-on-surface">Histórico</p>
+<p class="font-body-sm text-body-sm text-secondary">Ver tudo</p>
+</div>
+</button>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Faturas Pendentes -->
+<section class="lg:col-span-5 space-y-4">
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden">
+<!-- Item 1 -->
+<div class="p-4 border-b border-outline-variant flex justify-between items-center hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-error-container flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+</div>
+<div>
+<p class="font-numeric-data text-on-surface">Plano de Saúde Vitality</p>
+<div class="inline-block px-2 py-0.5 rounded border border-primary bg-primary-fixed/20 mt-1">
+<p class="font-body-sm text-[12px] text-error font-semibold">Vence em 2 dias</p>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-lg text-[18px]">R$ 450,20</p>
+<button class="text-primary font-label-caps text-[10px] border border-primary px-2 py-1 rounded mt-1">PAGAR</button>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="p-4 flex justify-between items-center hover:bg-surface-container-lowest transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-tertiary-container/20 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+</div>
+<div>
+<p class="font-numeric-data text-on-surface">Exames Laboratoriais</p>
+<div class="inline-block px-2 py-0.5 rounded border border-primary bg-primary-fixed/10 mt-1">
+<p class="font-body-sm text-[12px] text-secondary">Vence em 15/10</p>
+</div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-headline-lg text-[18px]">R$ 125,00</p>
+<button class="text-secondary font-label-caps text-[10px] border border-outline px-2 py-1 rounded mt-1">AGENDAR</button>
+</div>
+</div>
+</div>
+<!-- Bento Info Card -->
+</section>
+<!-- Transaction History -->
+<section class="lg:col-span-7 space-y-4">
+<div class="flex justify-between items-end mb-2">
+<h3 class="font-headline-lg text-headline-lg text-on-surface">Histórico Recente</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined text-[20px]" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="p-4 font-label-caps text-label-caps text-secondary">TRANSAÇÃO</th>
+<th class="p-4 font-label-caps text-label-caps text-secondary hidden md:table-cell">DATA</th>
+<th class="p-4 font-label-caps text-label-caps text-secondary text-right">VALOR</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary text-sm">
+<span class="material-symbols-outlined scale-75" data-icon="stethoscope">stethoscope</span>
+</div>
+<div>
+<p class="font-numeric-data text-sm">Consulta Dr. Silva</p>
+<p class="font-body-sm text-[12px] text-secondary md:hidden">Hoje, 09:45</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-body-sm text-secondary hidden md:table-cell">Hoje, 09:45</td>
+<td class="p-4 font-numeric-data text-right text-primary">- R$ 250,00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary text-sm">
+<span class="material-symbols-outlined scale-75" data-icon="bloodtype">bloodtype</span>
+</div>
+<div>
+<p class="font-numeric-data text-sm">Exame de Sangue</p>
+<p class="font-body-sm text-[12px] text-secondary md:hidden">Ontem, 14:20</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-body-sm text-secondary hidden md:table-cell">Ontem, 14:20</td>
+<td class="p-4 font-numeric-data text-right text-primary">- R$ 85,00</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary text-sm">
+<span class="material-symbols-outlined scale-75" data-icon="medication">medication</span>
+</div>
+<div>
+<p class="font-numeric-data text-sm">Farmácia Central</p>
+<p class="font-body-sm text-[12px] text-secondary md:hidden">05 Out, 18:00</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-body-sm text-secondary hidden md:table-cell">05 Out, 18:00</td>
+<td class="p-4 font-numeric-data text-right text-primary">- R$ 42,90</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 text-sm">
+<span class="material-symbols-outlined scale-75" data-icon="add">add</span>
+</div>
+<div>
+<p class="font-numeric-data text-sm">Reembolso Consulta</p>
+<p class="font-body-sm text-[12px] text-secondary md:hidden">03 Out, 11:15</p>
+</div>
+</div>
+</td>
+<td class="p-4 font-body-sm text-secondary hidden md:table-cell">03 Out, 11:15</td>
+<td class="p-4 font-numeric-data text-right text-green-600">+ R$ 180,00</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-low text-center">
+<button class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors">VER HISTÓRICO COMPLETO</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex items-center px-margin-mobile py-2 bg-surface border-t border-outline-variant shadow-lg md:hidden justify-center gap-4">
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant px-3 py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px] mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-fixed rounded-xl px-3 py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-caps text-[10px] mt-1">Finance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant px-3 py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="family_restroom">family_restroom</span>
+<span class="font-label-caps text-[10px] mt-1">Family</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant px-3 py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="description">medical_services</span>
+<span class="font-label-caps text-[10px] mt-1">Exames</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant px-3 py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-[10px] mt-1">Profile</span>
+</a>
+</nav>
+<!-- Desktop Side Nav Support (Invisible on Mobile) -->
+<div class="hidden md:block fixed left-0 top-0 h-full w-20 bg-surface border-r border-outline-variant py-8 z-50">
+<div class="flex flex-col items-center gap-8 h-full">
+<div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-on-primary shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+</div>
+<div class="flex flex-col gap-6 mt-12">
+<button class="w-12 h-12 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</button>
+<button class="w-12 h-12 rounded-xl flex items-center justify-center text-primary bg-primary-fixed shadow-inner transition-colors">
+<span class="material-symbols-outlined" data-icon="payments" style="font-variation-settings: 'FILL' 1;">payments</span>
+</button>
+<button class="w-12 h-12 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="family_restroom">family_restroom</span>
+</button>
+<button class="w-12 h-12 rounded-xl flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="description">medical_services</span>
+</button>
+</div>
+<div class="mt-auto">
+<button class="w-12 h-12 rounded-full border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a young professional man in a clean environment, modern and high-quality photography, neutral soft lighting, healthcare corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBffkuBO8ZzcYYgNLyyJ4L8YR633Fyzs8jPDaZnst_J_9HIGBEopcvfU-NKk6HXp_JR1ZNv2htN-IdEaUwL4yL6Cq7mRf1Hzxg6ffg8_XutxzTsUiO8siHrSBN9PGAer3tpfhQMZyCsq0p9WxfWzHWJlW68eQ04bABuq0zJrsRLuycB43xfTs5tmeJGclDnUropPM05EU2S8KHR46tzObopkn7CGjaOmUNPGBwIWvJNbHnQ9DsWag8jK1woncNfsbc9VublgtVp3QQ">
+</button>
+</div>
+</div>
+</div>
+<script>
+        // Simple interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.add('opacity-50');
+                setTimeout(() => this.classList.remove('opacity-50'), 150);
+            });
+        });
+
+        // Dynamic balance counter effect
+        const balanceEl = document.querySelector('h2');
+        if (balanceEl) {
+            let current = 0;
+            const target = 12450.80;
+            const step = target / 50;
+            const interval = setInterval(() => {
+                current += step;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(interval);
+                }
+                balanceEl.textContent = `R$ ${current.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }, 20);
+        }
+    </script>
+
+
+</body></html>

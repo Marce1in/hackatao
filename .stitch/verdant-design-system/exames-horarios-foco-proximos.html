@@ -1,0 +1,288 @@
+<!DOCTYPE html><html lang="pt-BR" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-pulse-soft {
+            animation: pulse-soft 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#00522f",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed-variant": "#0a5134",
+                        "secondary-fixed-dim": "#a8d64d",
+                        "secondary-fixed": "#c3f266",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#006d40",
+                        "surface-bright": "#f8f9fa",
+                        "on-surface": "#191c1d",
+                        "on-secondary-fixed": "#141f00",
+                        "primary-fixed": "#8cf8b7",
+                        "surface-dim": "#d9dadb",
+                        "on-tertiary-fixed": "#002112",
+                        "background": "#f8f9fa",
+                        "on-surface-variant": "#3e4a41",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#6fdb9c",
+                        "surface": "#f8f9fa",
+                        "outline-variant": "#bdcabe",
+                        "outline": "#6e7a70",
+                        "on-secondary-container": "#4d6c00",
+                        "on-primary-container": "#f6fff5",
+                        "surface-container-high": "#e7e8e9",
+                        "on-background": "#191c1d",
+                        "surface-variant": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#364e00",
+                        "primary": "#006a3f",
+                        "secondary-container": "#c0f063",
+                        "inverse-primary": "#6fdb9c",
+                        "surface-container-low": "#f3f4f5",
+                        "on-tertiary-container": "#f6fff6",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e1e3e4",
+                        "inverse-surface": "#2e3132",
+                        "tertiary-fixed": "#aff1ca",
+                        "primary-container": "#008650",
+                        "on-primary-fixed": "#002110",
+                        "tertiary-fixed-dim": "#93d5af",
+                        "surface-container": "#edeeef",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#428160",
+                        "secondary": "#496800",
+                        "inverse-on-surface": "#f0f1f2",
+                        "tertiary": "#276749"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "margin-desktop": "40px",
+                        "md": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "margin-mobile": "20px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md flex flex-col pb-24">
+<!-- TopAppBar -->
+<header class="bg-surface shadow-sm docked full-width top-0 z-40 sticky">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female family manager in her 30s, smiling warmly. The lighting is soft and natural, emphasizing a clinical yet compassionate atmosphere. She is set against a clean, blurred medical clinic background with soft mint and white tones, matching the healthcare brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDxP23IAspPWr1nQFGrsbia4I_X0yH2gN6ImnxbEVrFnvMovK5ET5klxFkbwY7LCbJtjS2K85hCWpwA1BT5MK4yzrY09LUvS8ew5qxRfkknI3Xxvq7WxJM6Xr-_9QZppMYh_HVVN1-50VZPpFuV7V05Vcx7WlrBhxMJFU6OnR6skMDg8TOOaC-ge6BfuE0ll_EjwvSzuNhWkP7t2WLgecrPduW0PUBfn8cVmEQW0DMXlFJubCyErTXG5Iq3VrisSL1v0sYw29yQ3No">
+</div>
+<h1 class="font-headline-md text-headline-md-mobile text-primary font-bold tracking-tight">Exames</h1>
+</div>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-high transition-colors p-2 rounded-full active:scale-95 duration-150">
+                notifications
+            </button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1200px] mx-auto px-margin-mobile md:px-margin-desktop py-6">
+<!-- Hero Section: Exam Timer -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Left Column: Upcoming Exams -->
+<div class="lg:col-span-2 flex flex-col gap-md">
+<div class="flex items-center justify-between px-2">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Próximos Horários</h3>
+<button class="text-primary font-label-md hover:underline">Ver Agenda</button>
+</div>
+<!-- Exam List Items -->
+<div class="flex flex-col gap-sm">
+<!-- Item 1: In Progress -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm flex items-center justify-between hover:border-primary transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined">ecg</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-lg text-on-surface">Teste Ergométrico</h4>
+<p class="text-on-surface-variant text-label-md">08:00 AM • Sala 04</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-secondary-container px-3 py-1 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse-soft"></span>
+<span class="font-label-md text-on-secondary-container">Em andamento</span>
+</div>
+</div>
+<!-- Item 2: Waiting -->
+<div class="bg-surface-container-lowest border-2 border-primary p-md rounded-xl shadow-md flex items-center justify-between hover:border-primary transition-colors relative overflow-hidden">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">bloodtype</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-lg text-on-surface font-bold">Hemograma Completo</h4>
+<p class="text-on-surface-variant text-label-md">10:30 AM • Laboratório A</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<div class="flex items-center gap-2 bg-primary text-on-primary px-3 py-1 rounded-full">
+<span class="font-label-md font-bold">Em 15 min</span>
+</div>
+<span class="text-primary font-label-md font-medium px-2">Próximo</span>
+</div>
+</div>
+<!-- Item 3: Waiting -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm flex items-center justify-between hover:border-primary transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">radiology</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-lg text-on-surface">Raio-X de Tórax</h4>
+<p class="text-on-surface-variant text-label-md">14:00 PM • Sala 12</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-high px-3 py-1 rounded-full">
+<span class="font-label-md text-on-surface-variant">Aguardando</span>
+</div>
+</div>
+<!-- Item 4: Completed -->
+<div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-sm flex items-center justify-between opacity-70">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed-dim/20 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-body-lg text-on-surface">Consulta de Triagem</h4>
+<p class="text-on-surface-variant text-label-md">07:15 AM • Recepção</p>
+</div>
+</div>
+<div class="flex items-center gap-2 bg-primary-fixed-dim/30 px-3 py-1 rounded-full">
+<span class="font-label-md text-primary">Concluído</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Location & Info -->
+<div class="flex flex-col gap-lg">
+<!-- Location Card -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden shadow-sm">
+<div class="h-40 relative">
+<div class="w-full h-full bg-cover bg-center" data-alt="A clean, minimalist high-resolution digital map interface showing a healthcare facility location in a modern urban area. The map uses a light-mode palette with mint green and soft grey tones. Icons indicate the hospital entrance and parking areas clearly. The visual style is clinical, precise, and user-friendly, reflecting high-end medical technology." data-location="Hospital Israelita Albert Einstein" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA69LtCRUGNcyevHiVp-L-hcCcYwhLTPNGLZD1HujmHWotL7B9ME2ZEQy3wzJWeJKVeSZa3X92On1_mZ_pxOLLb8cf-SmpQfGaQVMXMFXyB_F6FMNTecP_YLu6M0aA2I1Apb33uLDLyktb4AkDj0ZgwHv4IQRdcoVrU3Hff8GHQgELpOBa2YdWFcNG9nuzZB9pgaglJHtSu-LAAEqlcR6M_b088euREmjzQSTTmjXKiz95Zce3Vl8P04ywVURMyKUEm8GSClnxGTn0')"></div>
+<div class="absolute bottom-2 right-2">
+<button class="bg-primary text-on-primary p-2 rounded-full shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined">directions</span>
+</button>
+</div>
+</div>
+<div class="p-md">
+<h4 class="font-headline-sm text-body-lg text-on-surface mb-1">Centro Médico Vitality</h4>
+<p class="text-body-md text-on-surface-variant leading-tight">Bloco C, 4º Andar • Unidade Jardins</p>
+<div class="mt-4 pt-4 border-t border-outline-variant flex items-center gap-2 text-primary font-label-md">
+<span class="material-symbols-outlined text-[18px]">wifi</span>
+<span class="">Rede "Hospital_Guest" disponível</span>
+</div>
+</div>
+</div>
+<!-- Info/Tip Card -->
+<div class="bg-tertiary-container text-on-tertiary-container p-md rounded-xl flex items-start gap-md">
+<span class="material-symbols-outlined">info</span>
+<div>
+<p class="font-label-md font-bold mb-1">Instruções de Preparo</p>
+<p class="text-label-md opacity-90">Para o hemograma das 10:30, certifique-se de manter o jejum de 8 horas conforme orientado.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center pt-2 pb-safe px-2 bg-surface shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-md text-label-md">Family</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services" style="font-variation-settings: &quot;FILL&quot; 1;">medical_services</span>
+<span class="font-label-md text-label-md">Exams</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-md text-label-md">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-colors active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<script>
+        // Simple interactive timer logic
+        let seconds = 2712; // Start from 00:45:12
+        const timerElement = document.getElementById('timer');
+
+        function formatTime(sec) {
+            const h = Math.floor(sec / 3600).toString().padStart(2, '0');
+            const m = Math.floor((sec % 3600) / 60).toString().padStart(2, '0');
+            const s = (sec % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        setInterval(() => {
+            seconds++;
+            timerElement.textContent = formatTime(seconds);
+        }, 1000);
+    </script>
+</body></html>
