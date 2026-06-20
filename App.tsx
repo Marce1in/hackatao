@@ -47,42 +47,43 @@ import type {
 } from './src/types/appData';
 
 type TabKey = 'dashboard' | 'family' | 'exams' | 'history' | 'profile' | 'finance' | 'online' | 'lucas';
+type ActionHandler = (message: string) => void;
 
 const colors = {
-  background: '#F8F9FA',
+  background: '#F7F9F3',
   surface: '#FFFFFF',
-  surfaceContainerLow: '#F3F4F5',
-  surfaceContainer: '#EDEEEF',
-  surfaceContainerHigh: '#E7E8E9',
-  surfaceContainerHighest: '#E1E3E4',
-  onSurface: '#191C1D',
-  onSurfaceVariant: '#3E4A41',
-  outline: '#6E7A70',
-  outlineVariant: '#BDCABE',
-  primary: '#006A3F',
-  primaryContainer: '#008650',
+  surfaceContainerLow: '#F1F6EB',
+  surfaceContainer: '#E8EFE2',
+  surfaceContainerHigh: '#DDE8D4',
+  surfaceContainerHighest: '#D1E0C7',
+  onSurface: '#14221A',
+  onSurfaceVariant: '#526257',
+  outline: '#7C8B80',
+  outlineVariant: '#CBD9CE',
+  primary: '#2B985E',
+  primaryContainer: '#07834F',
   onPrimary: '#FFFFFF',
   onPrimaryContainer: '#F6FFF5',
-  secondary: '#496800',
-  secondaryContainer: '#C0F063',
-  onSecondaryContainer: '#4D6C00',
-  tertiary: '#276749',
-  tertiaryContainer: '#428160',
-  tertiaryFixed: '#AFF1CA',
-  onTertiaryFixed: '#002112',
-  error: '#BA1A1A',
+  secondary: '#4B7F13',
+  secondaryContainer: '#C8F65F',
+  onSecondaryContainer: '#24470A',
+  tertiary: '#1B6D4A',
+  tertiaryContainer: '#DDF5E6',
+  tertiaryFixed: '#BDEFCF',
+  onTertiaryFixed: '#10351F',
+  error: '#B3261E',
 };
 
 const shadow = {
   shadowColor: '#000000',
-  shadowOffset: { height: 4, width: 0 },
-  shadowOpacity: 0.05,
-  shadowRadius: 20,
-  elevation: 2,
+  shadowOffset: { height: 8, width: 0 },
+  shadowOpacity: 0.06,
+  shadowRadius: 18,
+  elevation: 3,
 };
 
 const tabs: Array<{ key: TabKey; label: string }> = [
-  { key: 'dashboard', label: 'Dashboard' },
+  { key: 'dashboard', label: 'Home' },
   { key: 'family', label: 'Família' },
   { key: 'exams', label: 'Exames' },
   { key: 'history', label: 'Histórico' },
@@ -119,6 +120,7 @@ const onlineDoctors = [
   { id: 'juliana', name: 'Dra. Juliana Costa', crm: 'Clínico Geral • CRM 44556', wait: '5 min', rating: '4.8' },
   { id: 'felipe', name: 'Dr. Felipe Rocha', crm: 'Clínico Geral • CRM 77889', wait: '8 min', rating: '4.7' },
   { id: 'beatriz', name: 'Dra. Beatriz Santos', crm: 'Pediatra • CRM 12345', wait: '12 min', rating: '4.9' },
+  { id: 'rafael', name: 'Dr. Rafael Nogueira', crm: 'Cardiologista • CRM 99110', wait: '4 min', rating: '4.9' },
 ];
 
 const financeItems = [
@@ -161,7 +163,7 @@ const ErrorState = ({ message, reload }: { message: string; reload: () => void }
   </View>
 );
 
-const Header = ({ data, title }: { data: AppData; title: string }) => (
+const Header = ({ data, onNotifications, title }: { data: AppData; onNotifications: () => void; title: string }) => (
   <View style={styles.header}>
     <View style={styles.headerIdentity}>
       <Image source={{ uri: data.user.avatarUrl }} style={styles.headerAvatar} />
@@ -169,13 +171,13 @@ const Header = ({ data, title }: { data: AppData; title: string }) => (
         {title}
       </Text>
     </View>
-    <Pressable accessibilityLabel="Notificações" accessibilityRole="button" style={styles.headerIconButton}>
+    <Pressable accessibilityLabel="Notificações" accessibilityRole="button" onPress={onNotifications} style={styles.headerIconButton}>
       <Bell color={colors.primary} size={20} strokeWidth={2.2} />
     </Pressable>
   </View>
 );
 
-const DetailHeader = ({ data, onBack, title }: { data: AppData; onBack: () => void; title: string }) => (
+const DetailHeader = ({ data, onBack, onNotifications, title }: { data: AppData; onBack: () => void; onNotifications: () => void; title: string }) => (
   <View style={styles.header}>
     <View style={styles.headerIdentity}>
       <Pressable accessibilityLabel="Voltar" accessibilityRole="button" onPress={onBack} style={styles.headerIconButton}>
@@ -185,7 +187,9 @@ const DetailHeader = ({ data, onBack, title }: { data: AppData; onBack: () => vo
         {title}
       </Text>
     </View>
-    <Image source={{ uri: data.user.avatarUrl }} style={styles.headerAvatar} />
+    <Pressable accessibilityLabel="Notificações" accessibilityRole="button" onPress={onNotifications}>
+      <Image source={{ uri: data.user.avatarUrl }} style={styles.headerAvatar} />
+    </Pressable>
   </View>
 );
 
@@ -219,6 +223,8 @@ const ScreenShell = ({
   children,
   data,
   onChangeTab,
+  onNotifications,
+  notice,
   title,
   detail,
 }: {
@@ -227,19 +233,39 @@ const ScreenShell = ({
   data: AppData;
   detail?: { onBack: () => void };
   onChangeTab: (tab: TabKey) => void;
+  onNotifications: () => void;
+  notice?: string;
   title: string;
 }) => (
   <View style={styles.appShell}>
-    {detail ? <DetailHeader data={data} onBack={detail.onBack} title={title} /> : <Header data={data} title={title} />}
+    {detail ? (
+      <DetailHeader data={data} onBack={detail.onBack} onNotifications={onNotifications} title={title} />
+    ) : (
+      <Header data={data} onNotifications={onNotifications} title={title} />
+    )}
     <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+      {notice ? <FeedbackBanner message={notice} /> : null}
       {children}
     </ScrollView>
     <BottomNav activeTab={activeTab} onChange={onChangeTab} />
   </View>
 );
 
-const DashboardScreen = ({ data, onChangeTab }: { data: AppData; onChangeTab: (tab: TabKey) => void }) => (
+const FeedbackBanner = ({ message }: { message: string }) => (
+  <View style={styles.feedbackBanner}>
+    <CheckCircle2 color={colors.onSecondaryContainer} size={18} />
+    <Text style={styles.feedbackText}>{message}</Text>
+  </View>
+);
+
+const DashboardScreen = ({ data, onAction, onChangeTab }: { data: AppData; onAction: ActionHandler; onChangeTab: (tab: TabKey) => void }) => (
   <>
+    <DashboardAgendaPanel
+      data={data}
+      onAction={onAction}
+      onExams={() => onChangeTab('exams')}
+      onOnline={() => onChangeTab('online')}
+    />
     <MeasurementBanner measurement={data.dashboard.measurement} />
     <View style={styles.actionGrid}>
       {data.dashboard.quickActions.map((action) => (
@@ -256,6 +282,9 @@ const DashboardScreen = ({ data, onChangeTab }: { data: AppData; onChangeTab: (t
             if (action.id === 'exam') {
               onChangeTab('exams');
             }
+            if (action.id === 'plan') {
+              onChangeTab('profile');
+            }
           }}
         />
       ))}
@@ -266,13 +295,99 @@ const DashboardScreen = ({ data, onChangeTab }: { data: AppData; onChangeTab: (t
         <Text style={styles.linkText}>Ver tudo</Text>
       </Pressable>
     </View>
-    <RecentTimeline items={data.dashboard.recentHistory} />
+    <RecentTimeline items={data.dashboard.recentHistory} onAction={onAction} />
   </>
 );
 
+const DashboardAgendaPanel = ({
+  data,
+  onAction,
+  onExams,
+  onOnline,
+}: {
+  data: AppData;
+  onAction: ActionHandler;
+  onExams: () => void;
+  onOnline: () => void;
+}) => {
+  const mapPreview = data.dashboard.recentHistory.find((item) => item.imageUrl)?.imageUrl;
+
+  return (
+    <View style={styles.agendaPanel}>
+      <View style={styles.sectionHeader}>
+        <Text style={styles.sectionTitle}>Próximos Horários</Text>
+        <Pressable accessibilityRole="button" onPress={onExams}>
+          <Text style={styles.linkText}>Ver Agenda</Text>
+        </Pressable>
+      </View>
+      <View style={styles.agendaStack}>
+        <Pressable accessibilityRole="button" onPress={onExams} style={({ pressed }) => [styles.agendaHighlight, pressed && styles.pressed]}>
+          <View style={styles.agendaIconBoxLime}>
+            <FileText color={colors.onSecondaryContainer} size={19} />
+          </View>
+          <View style={styles.agendaCopy}>
+            <Text style={styles.agendaTitle}>Hemograma Completo</Text>
+            <Text style={styles.agendaMeta}>Lab Vitality Centro</Text>
+          </View>
+          <Text style={styles.agendaTimeStrong}>Em 15 min</Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => onAction('Pré-operatório confirmado para hoje às 14:00.')}
+          style={({ pressed }) => [styles.agendaRow, pressed && styles.pressed]}
+        >
+          <View style={styles.agendaIconBox}>
+            <CalendarClock color={colors.primary} size={18} />
+          </View>
+          <View style={styles.agendaCopy}>
+            <Text style={styles.agendaTitle}>Pré-operatório</Text>
+            <Text style={styles.agendaMeta}>Hoje, 14:00</Text>
+          </View>
+          <Text style={styles.agendaChip}>Agendado</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={onOnline} style={({ pressed }) => [styles.agendaRow, pressed && styles.pressed]}>
+          <View style={styles.agendaIconBox}>
+            <Video color={colors.primary} size={18} />
+          </View>
+          <View style={styles.agendaCopy}>
+            <Text style={styles.agendaTitle}>Consulta Online</Text>
+            <Text style={styles.agendaMeta}>Dr. André Santos</Text>
+          </View>
+          <Text style={styles.agendaChip}>10 min</Text>
+        </Pressable>
+      </View>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => onAction('Localização da Clínica Sorriso Vida selecionada.')}
+        style={({ pressed }) => [styles.locationCard, pressed && styles.pressed]}
+      >
+        {mapPreview ? <Image source={{ uri: mapPreview }} style={styles.locationMap} /> : <View style={styles.locationMapFallback} />}
+        <View style={styles.locationFooter}>
+          <MapPin color={colors.primary} size={18} />
+          <View style={styles.agendaCopy}>
+            <Text style={styles.agendaTitle}>Clínica Sorriso Vida</Text>
+            <Text style={styles.agendaMeta}>Rua Alm. Barroso, Pelotas</Text>
+          </View>
+        </View>
+      </Pressable>
+      <Pressable
+        accessibilityRole="button"
+        onPress={() => onAction('Suporte acionado. Um atendente irá continuar pelo chat.')}
+        style={({ pressed }) => [styles.supportCard, pressed && styles.pressed]}
+      >
+        <MessageCircle color={colors.onPrimary} size={22} />
+        <View style={styles.agendaCopy}>
+          <Text style={styles.supportTitle}>Precisa de suporte?</Text>
+          <Text style={styles.supportText}>Atendimento da equipe disponível pelo app.</Text>
+        </View>
+      </Pressable>
+    </View>
+  );
+};
+
 const MeasurementBanner = ({ measurement }: { measurement: AppData['dashboard']['measurement'] }) => (
   <View style={styles.measurementBanner}>
-    <HeartPulse color={colors.onSecondaryContainer} size={118} style={styles.measurementWatermark} strokeWidth={1.4} />
+    <HeartPulse color={colors.onPrimaryContainer} size={118} style={styles.measurementWatermark} strokeWidth={1.4} />
     <View style={styles.measurementTop}>
       <Text style={styles.measurementOverline}>Última Medição</Text>
       <Text style={styles.measurementTime}>{measurement.time}</Text>
@@ -301,7 +416,7 @@ const MetricReadout = ({ metric }: { metric: MeasurementMetric }) => (
 
 const QuickActionButton = ({ action, onPress }: { action: QuickAction; onPress: () => void }) => {
   const primary = action.tone === 'primary';
-  const iconColor = primary ? colors.onPrimary : colors.onPrimaryContainer;
+  const iconColor = primary ? colors.onPrimary : colors.onSecondaryContainer;
 
   return (
     <Pressable
@@ -309,26 +424,30 @@ const QuickActionButton = ({ action, onPress }: { action: QuickAction; onPress: 
       onPress={onPress}
       style={({ pressed }) => [
         styles.actionButton,
-        { backgroundColor: primary ? colors.primary : colors.primaryContainer },
+        { backgroundColor: primary ? colors.primary : colors.secondaryContainer },
         pressed && styles.pressed,
       ]}
     >
-      {action.icon === 'plan' ? <BriefcaseMedical color={iconColor} size={32} /> : null}
-      {action.icon === 'finance' ? <CreditCard color={iconColor} size={32} /> : null}
-      {action.icon === 'family' ? <UsersRound color={iconColor} size={32} /> : null}
-      {action.icon === 'exam' ? <FileText color={iconColor} size={32} /> : null}
-      <Text style={styles.actionLabel}>{action.label}</Text>
+      {action.icon === 'plan' ? <BriefcaseMedical color={iconColor} size={28} /> : null}
+      {action.icon === 'finance' ? <CreditCard color={iconColor} size={28} /> : null}
+      {action.icon === 'family' ? <UsersRound color={iconColor} size={28} /> : null}
+      {action.icon === 'exam' ? <FileText color={iconColor} size={28} /> : null}
+      <Text style={[styles.actionLabel, !primary && styles.actionLabelSecondary]}>{action.label}</Text>
     </Pressable>
   );
 };
 
-const RecentTimeline = ({ items }: { items: RecentHistoryItem[] }) => (
+const RecentTimeline = ({ items, onAction }: { items: RecentHistoryItem[]; onAction: ActionHandler }) => (
   <View style={styles.timelineWrap}>
     <View style={styles.timelineLine} />
     {items.map((item) => (
       <View key={item.id} style={styles.timelineItem}>
         <View style={[styles.timelineDot, { backgroundColor: dotColor[item.dotTone] }]} />
-        <View style={[styles.timelineCard, item.imageUrl && styles.timelineCardWithImage]}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={() => onAction(`${item.title} aberto no histórico.`)}
+          style={({ pressed }) => [styles.timelineCard, item.imageUrl && styles.timelineCardWithImage, pressed && styles.pressed]}
+        >
           <View style={styles.timelineCardBody}>
             <View style={styles.timelineMetaRow}>
               <Text style={styles.timelineDate}>{item.date}</Text>
@@ -346,36 +465,55 @@ const RecentTimeline = ({ items }: { items: RecentHistoryItem[] }) => (
             ) : null}
           </View>
           {item.imageUrl ? <Image source={{ uri: item.imageUrl }} style={styles.mapImage} /> : null}
-        </View>
+        </Pressable>
       </View>
     ))}
   </View>
 );
 
-const FamilyScreen = ({ data, onLucas }: { data: AppData; onLucas: () => void }) => (
+const FamilyScreen = ({
+  data,
+  onAction,
+  onHistory,
+  onLucas,
+}: {
+  data: AppData;
+  onAction: ActionHandler;
+  onHistory: () => void;
+  onLucas: () => void;
+}) => (
   <>
-    <FamilyPrimaryCard data={data} />
+    <FamilyPrimaryCard data={data} onHistory={onHistory} />
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>Dependentes</Text>
-      <Pressable accessibilityRole="button" style={styles.addButton}>
+      <Pressable
+        accessibilityLabel="Adicionar dependente"
+        accessibilityRole="button"
+        onPress={() => onAction('Cadastro de dependente preparado.')}
+        style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
+      >
         <CirclePlus color={colors.primary} size={16} />
         <Text style={styles.addButtonText}>Adicionar</Text>
       </Pressable>
     </View>
     <View style={styles.listStack}>
       {data.family.dependents.map((dependent) => (
-        <DependentRow dependent={dependent} key={dependent.id} onPress={dependent.id === 'lucas' ? onLucas : undefined} />
+        <DependentRow
+          dependent={dependent}
+          key={dependent.id}
+          onPress={dependent.id === 'lucas' ? onLucas : () => onAction(`${dependent.name} selecionado.`)}
+        />
       ))}
     </View>
     <View style={styles.summaryGrid}>
       {data.family.summary.map((item) => (
-        <FamilySummaryCard item={item} key={item.id} />
+        <FamilySummaryCard item={item} key={item.id} onPress={() => onAction(`${item.label}: ${item.value}.`)} />
       ))}
     </View>
   </>
 );
 
-const FamilyPrimaryCard = ({ data }: { data: AppData }) => (
+const FamilyPrimaryCard = ({ data, onHistory }: { data: AppData; onHistory: () => void }) => (
   <View style={styles.familyCard}>
     <UsersRound color={colors.onPrimaryContainer} size={116} style={styles.familyWatermark} strokeWidth={1.4} />
     <View style={styles.familyTop}>
@@ -388,10 +526,10 @@ const FamilyPrimaryCard = ({ data }: { data: AppData }) => (
           <Text style={styles.planBadge}>{data.family.primaryMember.plan}</Text>
         </View>
       </View>
-      <View style={styles.historyLink}>
+      <Pressable accessibilityRole="button" onPress={onHistory} style={({ pressed }) => [styles.historyLink, pressed && styles.pressed]}>
         <History color={colors.onPrimaryContainer} size={14} />
         <Text style={styles.historyLinkText}>Histórico</Text>
-      </View>
+      </Pressable>
     </View>
     <View style={styles.familyMetrics}>
       {data.family.primaryMember.metrics.map((metric) => (
@@ -424,8 +562,8 @@ const FamilyMetric = ({ metric }: { metric: MeasurementMetric }) => (
   </View>
 );
 
-const DependentRow = ({ dependent, onPress }: { dependent: FamilyDependent; onPress?: () => void }) => (
-  <Pressable accessibilityRole="button" disabled={!onPress} onPress={onPress} style={({ pressed }) => [styles.memberRow, pressed && styles.pressed]}>
+const DependentRow = ({ dependent, onPress }: { dependent: FamilyDependent; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.memberRow, pressed && styles.pressed]}>
     <View style={styles.memberLeft}>
       {dependent.avatarUrl ? (
         <Image source={{ uri: dependent.avatarUrl }} style={styles.memberAvatarImage} />
@@ -449,25 +587,37 @@ const DependentRow = ({ dependent, onPress }: { dependent: FamilyDependent; onPr
   </Pressable>
 );
 
-const ExamsScreen = ({ onFinance, onOnline }: { onFinance: () => void; onOnline: () => void }) => (
+const ExamsScreen = ({
+  onAction,
+  onFamily,
+  onFinance,
+  onOnline,
+}: {
+  onAction: ActionHandler;
+  onFamily: () => void;
+  onFinance: () => void;
+  onOnline: () => void;
+}) => (
   <>
     <View style={styles.pageIntro}>
       <Text style={styles.pageTitle}>Exames e Consultas</Text>
       <Text style={styles.pageCopy}>Gerencie sua saúde e agendamentos de forma rápida.</Text>
     </View>
     <View style={styles.serviceGrid}>
-      <ServiceCard icon="calendar" label="Agendar Exame" tone="surface" />
+      <ServiceCard icon="calendar" label="Agendar Exame" onPress={() => onAction('Fluxo de agendamento de exame iniciado.')} tone="surface" />
       <ServiceCard icon="video" label="Consulta Online" onPress={onOnline} tone="primary" />
-      <ServiceCard icon="clock" label="Exames para Fazer" tone="secondary" />
-      <ServiceCard icon="medical" label="Médico Familiar" tone="surface" />
+      <ServiceCard icon="clock" label="Exames para Fazer" onPress={() => onAction('Lista de exames pendentes aberta.')} tone="secondary" />
+      <ServiceCard icon="medical" label="Médico Familiar" onPress={onFamily} tone="surface" />
     </View>
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>Próximos Agendamentos</Text>
-      <Text style={styles.linkText}>Ver todos</Text>
+      <Pressable accessibilityRole="button" onPress={() => onAction('Todos os agendamentos estão visíveis nesta tela.')}>
+        <Text style={styles.linkText}>Ver todos</Text>
+      </Pressable>
     </View>
     <View style={styles.listStack}>
       {upcomingAppointments.map((item) => (
-        <AppointmentCard item={item} key={item.id} />
+        <AppointmentCard item={item} key={item.id} onPress={() => onAction(`${item.title} selecionado.`)} />
       ))}
     </View>
     <View style={styles.sectionHeader}>
@@ -476,7 +626,7 @@ const ExamsScreen = ({ onFinance, onOnline }: { onFinance: () => void; onOnline:
     </View>
     <View style={styles.listStack}>
       {examQueue.map((item) => (
-        <ExamQueueRow item={item} key={item.id} />
+        <ExamQueueRow item={item} key={item.id} onPress={() => onAction(`${item.title}: ${item.status}.`)} />
       ))}
     </View>
     <Pressable accessibilityRole="button" onPress={onFinance} style={({ pressed }) => [styles.checkoutCard, pressed && styles.pressed]}>
@@ -515,27 +665,27 @@ const ServiceCard = ({
       {icon === 'video' ? <Video color={color} size={28} /> : null}
       {icon === 'clock' ? <Clock3 color={color} size={28} /> : null}
       {icon === 'medical' ? <Stethoscope color={color} size={28} /> : null}
-      <Text style={[styles.serviceLabel, (primary || secondary) && styles.serviceLabelStrong]}>{label}</Text>
+      <Text style={[styles.serviceLabel, primary && styles.serviceLabelStrong, secondary && styles.serviceLabelSecondary]}>{label}</Text>
     </Pressable>
   );
 };
 
-const AppointmentCard = ({ item }: { item: (typeof upcomingAppointments)[number] }) => (
-  <View style={styles.appointmentCard}>
+const AppointmentCard = ({ item, onPress }: { item: (typeof upcomingAppointments)[number]; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.appointmentCard, pressed && styles.pressed]}>
     <View style={[styles.appointmentDate, item.tone === 'secondary' && styles.appointmentDateSecondary]}>
-      <Text style={styles.appointmentDateText}>{item.date}</Text>
-      <Text style={styles.appointmentTimeText}>{item.time}</Text>
+      <Text style={[styles.appointmentDateText, item.tone === 'secondary' && styles.appointmentDateTextSecondary]}>{item.date}</Text>
+      <Text style={[styles.appointmentTimeText, item.tone === 'secondary' && styles.appointmentDateTextSecondary]}>{item.time}</Text>
     </View>
     <View style={styles.appointmentCopy}>
       <Text style={styles.appointmentTitle}>{item.title}</Text>
       <Text style={styles.appointmentSubtitle}>{item.subtitle}</Text>
     </View>
     <ChevronRight color={colors.outline} size={20} />
-  </View>
+  </Pressable>
 );
 
-const ExamQueueRow = ({ item }: { item: (typeof examQueue)[number] }) => (
-  <View style={styles.examQueueRow}>
+const ExamQueueRow = ({ item, onPress }: { item: (typeof examQueue)[number]; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.examQueueRow, pressed && styles.pressed]}>
     <View style={styles.examQueueIcon}>
       <FileText color={colors.primary} size={22} />
     </View>
@@ -547,38 +697,79 @@ const ExamQueueRow = ({ item }: { item: (typeof examQueue)[number] }) => (
       <Text style={styles.examStatus}>{item.status}</Text>
       <Text style={styles.examTime}>{item.time}</Text>
     </View>
-  </View>
+  </Pressable>
 );
 
-const OnlineScreen = () => (
-  <>
-    <View style={styles.searchPanel}>
-      <Search color={colors.onSurfaceVariant} size={18} />
-      <Text style={styles.searchPlaceholder}>Buscar especialidade ou médico</Text>
-    </View>
-    <ScrollView horizontal contentContainerStyle={styles.filterRow} showsHorizontalScrollIndicator={false}>
-      {['Todos', 'Clínico Geral', 'Pediatria', 'Cardio'].map((filter, index) => (
-        <View key={filter} style={[styles.filterChip, index === 0 && styles.filterChipActive]}>
-          <Text style={[styles.filterChipText, index === 0 && styles.filterChipTextActive]}>{filter}</Text>
+const normalizeSpecialty = (value: string) =>
+  value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
+
+const OnlineScreen = ({ onAction }: { onAction: ActionHandler }) => {
+  const [activeFilter, setActiveFilter] = useState('Todos');
+  const filters = ['Todos', 'Clínico Geral', 'Pediatria', 'Cardio'];
+  const activeSpecialty = normalizeSpecialty(activeFilter).split(' ')[0];
+  const specialtyAliases: Record<string, string[]> = {
+    cardio: ['cardio', 'cardiologista'],
+    pediatria: ['pediatra', 'pediatria'],
+  };
+  const activeSpecialtyTerms = specialtyAliases[activeSpecialty] ?? [activeSpecialty];
+  const filteredDoctors =
+    activeFilter === 'Todos'
+      ? onlineDoctors
+      : onlineDoctors.filter((doctor) =>
+          activeSpecialtyTerms.some((term) => normalizeSpecialty(doctor.crm).includes(term)),
+        );
+
+  return (
+    <>
+      <Pressable
+        accessibilityLabel="Buscar médico"
+        accessibilityRole="button"
+        onPress={() => onAction('Busca pronta para especialidade, médico ou CRM.')}
+        style={({ pressed }) => [styles.searchPanel, pressed && styles.pressed]}
+      >
+        <Search color={colors.onSurfaceVariant} size={18} />
+        <Text style={styles.searchPlaceholder}>Buscar especialidade ou médico</Text>
+      </Pressable>
+      <ScrollView horizontal contentContainerStyle={styles.filterRow} showsHorizontalScrollIndicator={false}>
+        {filters.map((filter) => {
+          const active = filter === activeFilter;
+
+          return (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: active }}
+              key={filter}
+              onPress={() => {
+                setActiveFilter(filter);
+                onAction(`Filtro aplicado: ${filter}.`);
+              }}
+              style={({ pressed }) => [styles.filterChip, active && styles.filterChipActive, pressed && styles.pressed]}
+            >
+              <Text style={[styles.filterChipText, active && styles.filterChipTextActive]}>{filter}</Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+      <View style={styles.onlineHero}>
+        <MessageCircle color={colors.onSecondaryContainer} size={32} />
+        <View style={styles.checkoutCopy}>
+          <Text style={styles.onlineHeroTitle}>Médicos de prontidão</Text>
+          <Text style={styles.onlineHeroText}>Atendimento online com clínicos disponíveis agora.</Text>
         </View>
-      ))}
-    </ScrollView>
-    <View style={styles.onlineHero}>
-      <MessageCircle color={colors.onSecondaryContainer} size={32} />
-      <View style={styles.checkoutCopy}>
-        <Text style={styles.onlineHeroTitle}>Médicos de prontidão</Text>
-        <Text style={styles.onlineHeroText}>Atendimento online com clínicos disponíveis agora.</Text>
       </View>
-    </View>
-    <View style={styles.listStack}>
-      {onlineDoctors.map((doctor) => (
-        <DoctorCard doctor={doctor} key={doctor.id} />
-      ))}
-    </View>
-  </>
-);
+      <View style={styles.listStack}>
+        {filteredDoctors.map((doctor) => (
+          <DoctorCard doctor={doctor} key={doctor.id} onConsult={() => onAction(`Consulta com ${doctor.name} iniciada.`)} />
+        ))}
+      </View>
+    </>
+  );
+};
 
-const DoctorCard = ({ doctor }: { doctor: (typeof onlineDoctors)[number] }) => (
+const DoctorCard = ({ doctor, onConsult }: { doctor: (typeof onlineDoctors)[number]; onConsult: () => void }) => (
   <View style={styles.doctorCard}>
     <View style={styles.doctorAvatar}>
       <Stethoscope color={colors.primary} size={26} />
@@ -591,14 +782,14 @@ const DoctorCard = ({ doctor }: { doctor: (typeof onlineDoctors)[number] }) => (
         <Text style={styles.doctorStat}>Avaliação {doctor.rating}</Text>
       </View>
     </View>
-    <Pressable accessibilityRole="button" style={styles.consultButton}>
+    <Pressable accessibilityRole="button" onPress={onConsult} style={({ pressed }) => [styles.consultButton, pressed && styles.pressed]}>
       <Video color={colors.onPrimary} size={16} />
       <Text style={styles.consultButtonText}>Consultar</Text>
     </Pressable>
   </View>
 );
 
-const FinanceScreen = () => (
+const FinanceScreen = ({ onAction, onHistory }: { onAction: ActionHandler; onHistory: () => void }) => (
   <>
     <View style={styles.financeHero}>
       <Text style={styles.financeLabel}>Saldo disponível</Text>
@@ -606,30 +797,42 @@ const FinanceScreen = () => (
       <Text style={styles.financeCopy}>Plano Premium ativo • Próxima cobrança em 2 dias</Text>
     </View>
     <View style={styles.financeActionGrid}>
-      <FinanceAction icon="receipt" label="Pagar Fatura" subtitle="Boletos e convênios" />
-      <FinanceAction icon="send" label="Transferir" subtitle="Envio rápido PIX" />
-      <FinanceAction icon="history" label="Histórico" subtitle="Ver tudo" />
+      <FinanceAction icon="receipt" label="Pagar Fatura" onPress={() => onAction('Pagamento da fatura preparado.')} subtitle="Boletos e convênios" />
+      <FinanceAction icon="send" label="Transferir" onPress={() => onAction('Transferência PIX preparada.')} subtitle="Envio rápido PIX" />
+      <FinanceAction icon="history" label="Histórico" onPress={onHistory} subtitle="Ver tudo" />
     </View>
     <Text style={styles.sectionTitle}>Pagamentos Pendentes</Text>
     <View style={styles.listStack}>
       {financeItems.map((item) => (
-        <FinanceDueCard item={item} key={item.id} />
+        <FinanceDueCard item={item} key={item.id} onPress={() => onAction(`${item.action}: ${item.title} (${item.value}).`)} />
       ))}
     </View>
     <View style={styles.sectionHeader}>
       <Text style={styles.sectionTitle}>Histórico Recente</Text>
-      <Text style={styles.linkText}>Completo</Text>
+      <Pressable accessibilityRole="button" onPress={onHistory}>
+        <Text style={styles.linkText}>Completo</Text>
+      </Pressable>
     </View>
     <View style={styles.listStack}>
       {financeHistory.map((item) => (
-        <FinanceHistoryRow item={item} key={item.id} />
+        <FinanceHistoryRow item={item} key={item.id} onPress={() => onAction(`${item.title}: ${item.value}.`)} />
       ))}
     </View>
   </>
 );
 
-const FinanceAction = ({ icon, label, subtitle }: { icon: 'receipt' | 'send' | 'history'; label: string; subtitle: string }) => (
-  <View style={styles.financeAction}>
+const FinanceAction = ({
+  icon,
+  label,
+  onPress,
+  subtitle,
+}: {
+  icon: 'receipt' | 'send' | 'history';
+  label: string;
+  onPress: () => void;
+  subtitle: string;
+}) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.financeAction, pressed && styles.pressed]}>
     <View style={styles.financeActionIcon}>
       {icon === 'receipt' ? <Receipt color={colors.primary} size={22} /> : null}
       {icon === 'send' ? <Send color={colors.primary} size={22} /> : null}
@@ -639,11 +842,15 @@ const FinanceAction = ({ icon, label, subtitle }: { icon: 'receipt' | 'send' | '
       <Text style={styles.financeActionLabel}>{label}</Text>
       <Text style={styles.financeActionSubtitle}>{subtitle}</Text>
     </View>
-  </View>
+  </Pressable>
 );
 
-const FinanceDueCard = ({ item }: { item: (typeof financeItems)[number] }) => (
-  <View style={styles.financeDueCard}>
+const FinanceDueCard = ({ item, onPress }: { item: (typeof financeItems)[number]; onPress: () => void }) => (
+  <Pressable
+    accessibilityRole="button"
+    onPress={onPress}
+    style={({ pressed }) => [styles.financeDueCard, pressed && styles.pressed]}
+  >
     <View style={styles.financeDueLeft}>
       <Text style={styles.financeDueTitle}>{item.title}</Text>
       <Text style={[styles.financeDueDate, item.urgent && styles.financeDueDateUrgent]}>{item.due}</Text>
@@ -652,11 +859,11 @@ const FinanceDueCard = ({ item }: { item: (typeof financeItems)[number] }) => (
       <Text style={styles.financeDueValue}>{item.value}</Text>
       <Text style={[styles.financeDueAction, !item.urgent && styles.financeDueActionMuted]}>{item.action}</Text>
     </View>
-  </View>
+  </Pressable>
 );
 
-const FinanceHistoryRow = ({ item }: { item: (typeof financeHistory)[number] }) => (
-  <View style={styles.financeHistoryRow}>
+const FinanceHistoryRow = ({ item, onPress }: { item: (typeof financeHistory)[number]; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.financeHistoryRow, pressed && styles.pressed]}>
     <View style={styles.examQueueIcon}>
       <CreditCard color={colors.primary} size={20} />
     </View>
@@ -665,10 +872,10 @@ const FinanceHistoryRow = ({ item }: { item: (typeof financeHistory)[number] }) 
       <Text style={styles.appointmentSubtitle}>{item.date}</Text>
     </View>
     <Text style={[styles.financeHistoryValue, item.value.startsWith('+') && styles.financeHistoryValuePositive]}>{item.value}</Text>
-  </View>
+  </Pressable>
 );
 
-const LucasScreen = ({ data }: { data: AppData }) => {
+const LucasScreen = ({ data, onAction, onOnline }: { data: AppData; onAction: ActionHandler; onOnline: () => void }) => {
   const lucas = data.family.dependents.find((dependent) => dependent.id === 'lucas');
 
   return (
@@ -682,29 +889,31 @@ const LucasScreen = ({ data }: { data: AppData }) => {
           <FamilyMetric metric={{ label: 'Glicose', unit: 'mg/dL', value: 91 }} />
         </View>
       </View>
-      <View style={styles.nextConsultCard}>
+      <Pressable accessibilityRole="button" onPress={onOnline} style={({ pressed }) => [styles.nextConsultCard, pressed && styles.pressed]}>
         <CalendarClock color={colors.onPrimaryContainer} size={30} />
         <View style={styles.checkoutCopy}>
           <Text style={styles.nextConsultTitle}>Próxima Consulta</Text>
           <Text style={styles.nextConsultText}>Agendada para 12 de Agosto</Text>
         </View>
         <Text style={styles.nextConsultButton}>Detalhes</Text>
-      </View>
+      </Pressable>
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionTitle}>Histórico de Atividades</Text>
-        <Text style={styles.linkText}>Filtrar</Text>
+        <Pressable accessibilityRole="button" onPress={() => onAction('Filtro de atividades do Lucas aplicado.')}>
+          <Text style={styles.linkText}>Filtrar</Text>
+        </Pressable>
       </View>
       <View style={styles.listStack}>
         {lucasActivities.map((activity) => (
-          <LucasActivity activity={activity} key={activity.id} />
+          <LucasActivity activity={activity} key={activity.id} onPress={() => onAction(`${activity.title} aberto.`)} />
         ))}
       </View>
     </>
   );
 };
 
-const LucasActivity = ({ activity }: { activity: (typeof lucasActivities)[number] }) => (
-  <View style={styles.historyCard}>
+const LucasActivity = ({ activity, onPress }: { activity: (typeof lucasActivities)[number]; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.historyCard, pressed && styles.pressed]}>
     <View style={styles.historyIconBox}>
       {activity.icon === 'medical' ? <BriefcaseMedical color={colors.primary} size={20} /> : null}
       {activity.icon === 'vaccine' ? <Syringe color={colors.primary} size={20} /> : null}
@@ -715,49 +924,94 @@ const LucasActivity = ({ activity }: { activity: (typeof lucasActivities)[number
       <Text style={styles.historySubtitle}>{activity.subtitle}</Text>
     </View>
     <Text style={styles.historyCardTrailing}>{activity.date}</Text>
-  </View>
+  </Pressable>
 );
 
-const FamilySummaryCard = ({ item }: { item: FamilySummary }) => {
+const FamilySummaryCard = ({ item, onPress }: { item: FamilySummary; onPress: () => void }) => {
   const secondary = item.tone === 'secondary';
 
   return (
-    <View style={[styles.summaryCard, secondary ? styles.summaryCardSecondary : styles.summaryCardTertiary]}>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.summaryCard, secondary ? styles.summaryCardSecondary : styles.summaryCardTertiary, pressed && styles.pressed]}
+    >
       {item.icon === 'group' ? <UsersRound color={secondary ? colors.secondary : colors.tertiary} size={20} /> : null}
       {item.icon === 'shield' ? <ShieldCheck color={secondary ? colors.secondary : colors.tertiary} size={20} /> : null}
       <Text style={styles.summaryLabel}>{item.label}</Text>
       <Text style={[styles.summaryValue, !secondary && styles.summaryValueTertiary]}>{item.value}</Text>
-    </View>
+    </Pressable>
   );
 };
 
-const HistoryScreen = ({ data }: { data: AppData }) => (
-  <>
-    <View style={styles.historyHero}>
-      <Text style={styles.historyHeroTitle}>Histórico</Text>
-      <Text style={styles.historyHeroCopy}>Acompanhe sua jornada de saúde</Text>
-    </View>
-    <ScrollView horizontal contentContainerStyle={styles.filterRow} showsHorizontalScrollIndicator={false}>
-      {data.history.filters.map((filter, index) => (
-        <View key={filter} style={[styles.filterChip, index === 0 && styles.filterChipActive]}>
-          <Text style={[styles.filterChipText, index === 0 && styles.filterChipTextActive]}>{filter}</Text>
-        </View>
-      ))}
-    </ScrollView>
-    <View style={styles.historyGroups}>
-      {data.history.groups.map((group) => (
-        <HistoryGroupSection group={group} key={group.id} />
-      ))}
-    </View>
-    <View style={styles.insightGrid}>
-      {data.history.insights.map((insight) => (
-        <InsightCard insight={insight} key={insight.id} />
-      ))}
-    </View>
-  </>
-);
+const HistoryScreen = ({ data, onAction }: { data: AppData; onAction: ActionHandler }) => {
+  const [activeFilter, setActiveFilter] = useState(data.history.filters[0] ?? 'Tudo');
+  const filteredGroups = data.history.groups
+    .map((group) => ({
+      ...group,
+      cards: group.cards.filter((card) => {
+        if (activeFilter === 'Tudo') {
+          return true;
+        }
 
-const HistoryGroupSection = ({ group }: { group: HistoryGroup }) => (
+        if (activeFilter === 'Medições') {
+          return Boolean(card.metrics);
+        }
+
+        if (activeFilter === 'Exames Laboratoriais') {
+          return card.icon === 'document';
+        }
+
+        if (activeFilter === 'Vacinas') {
+          return card.icon === 'vaccine';
+        }
+
+        return true;
+      }),
+    }))
+    .filter((group) => group.cards.length > 0);
+
+  return (
+    <>
+      <View style={styles.historyHero}>
+        <Text style={styles.historyHeroTitle}>Histórico</Text>
+        <Text style={styles.historyHeroCopy}>Acompanhe sua jornada de saúde</Text>
+      </View>
+      <ScrollView horizontal contentContainerStyle={styles.filterRow} showsHorizontalScrollIndicator={false}>
+        {data.history.filters.map((filter) => {
+          const active = filter === activeFilter;
+
+          return (
+            <Pressable
+              accessibilityRole="button"
+              accessibilityState={{ selected: active }}
+              key={filter}
+              onPress={() => {
+                setActiveFilter(filter);
+                onAction(`Filtro aplicado: ${filter}.`);
+              }}
+              style={({ pressed }) => [styles.filterChip, active && styles.filterChipActive, pressed && styles.pressed]}
+            >
+              <Text style={[styles.filterChipText, active && styles.filterChipTextActive]}>{filter}</Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+      <View style={styles.historyGroups}>
+        {filteredGroups.map((group) => (
+          <HistoryGroupSection group={group} key={group.id} onAction={onAction} />
+        ))}
+      </View>
+      <View style={styles.insightGrid}>
+        {data.history.insights.map((insight) => (
+          <InsightCard insight={insight} key={insight.id} onPress={() => onAction(`${insight.label}: ${insight.value}.`)} />
+        ))}
+      </View>
+    </>
+  );
+};
+
+const HistoryGroupSection = ({ group, onAction }: { group: HistoryGroup; onAction: ActionHandler }) => (
   <View style={styles.historyGroup}>
     <View style={styles.historyGroupTitleRow}>
       <View style={[styles.historyGroupDot, { backgroundColor: dotColor[group.dotTone] }]} />
@@ -765,14 +1019,14 @@ const HistoryGroupSection = ({ group }: { group: HistoryGroup }) => (
     </View>
     <View style={styles.listStack}>
       {group.cards.map((card) => (
-        <HistoryEntryCard card={card} key={card.id} />
+        <HistoryEntryCard card={card} key={card.id} onPress={() => onAction(`${card.title} aberto.`)} />
       ))}
     </View>
   </View>
 );
 
-const HistoryEntryCard = ({ card }: { card: HistoryCard }) => (
-  <View style={styles.historyCard}>
+const HistoryEntryCard = ({ card, onPress }: { card: HistoryCard; onPress: () => void }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.historyCard, pressed && styles.pressed]}>
     <View style={[styles.historyIconBox, historyIconTone(card.tone)]}>
       {card.icon === 'heart' ? <HeartPulse color={historyIconColor(card.tone)} size={20} /> : null}
       {card.icon === 'document' ? <FileText color={historyIconColor(card.tone)} size={20} /> : null}
@@ -801,7 +1055,7 @@ const HistoryEntryCard = ({ card }: { card: HistoryCard }) => (
     {card.icon === 'document' ? <Download color={colors.outline} size={18} /> : null}
     {card.status === 'done' ? <CheckCircle2 color={colors.secondary} size={18} /> : null}
     {card.icon === 'medical' ? <ChevronRight color={colors.outline} size={18} /> : null}
-  </View>
+  </Pressable>
 );
 
 const historyIconTone = (tone: HistoryCard['tone']) => {
@@ -832,11 +1086,15 @@ const historyIconColor = (tone: HistoryCard['tone']) => {
   return colors.onSurfaceVariant;
 };
 
-const InsightCard = ({ insight }: { insight: HistoryInsight }) => {
+const InsightCard = ({ insight, onPress }: { insight: HistoryInsight; onPress: () => void }) => {
   const secondary = insight.tone === 'secondary';
 
   return (
-    <View style={[styles.insightCard, secondary ? styles.insightSecondary : styles.insightTertiary]}>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.insightCard, secondary ? styles.insightSecondary : styles.insightTertiary, pressed && styles.pressed]}
+    >
       {insight.icon === 'trend' ? (
         <TrendingUp color={secondary ? colors.onSecondaryContainer : colors.onTertiaryFixed} size={22} />
       ) : (
@@ -846,11 +1104,11 @@ const InsightCard = ({ insight }: { insight: HistoryInsight }) => {
         <Text style={[styles.insightLabel, !secondary && styles.insightLabelTertiary]}>{insight.label}</Text>
         <Text style={[styles.insightValue, !secondary && styles.insightValueTertiary]}>{insight.value}</Text>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
-const ProfileScreen = ({ data }: { data: AppData }) => (
+const ProfileScreen = ({ data, onAction }: { data: AppData; onAction: ActionHandler }) => (
   <>
     <View style={styles.profileCard}>
       <Image source={{ uri: data.user.avatarUrl }} style={styles.profileAvatar} />
@@ -858,24 +1116,30 @@ const ProfileScreen = ({ data }: { data: AppData }) => (
       <Text style={styles.profilePlan}>{data.user.plan}</Text>
     </View>
     <View style={styles.profileGrid}>
-      <ProfileInfo label="Equipe" value={data.profile.careTeam} />
-      <ProfileInfo label="Próximo Exame" value={data.profile.nextExam} />
-      <ProfileInfo label="Fonte" value="mockAppData.json" />
-      <ProfileInfo label="Integração" value="/api/mobile/app-data" />
+      <ProfileInfo label="Equipe" onPress={() => onAction(`Equipe selecionada: ${data.profile.careTeam}.`)} value={data.profile.careTeam} />
+      <ProfileInfo label="Próximo Exame" onPress={() => onAction(`Próximo exame: ${data.profile.nextExam}.`)} value={data.profile.nextExam} />
+      <ProfileInfo label="Fonte" onPress={() => onAction('Fonte de dados mockAppData.json conferida.')} value="mockAppData.json" />
+      <ProfileInfo label="Integração" onPress={() => onAction('Endpoint /api/mobile/app-data selecionado.')} value="/api/mobile/app-data" />
     </View>
   </>
 );
 
-const ProfileInfo = ({ label, value }: { label: string; value: string }) => (
-  <View style={styles.profileInfo}>
+const ProfileInfo = ({ label, onPress, value }: { label: string; onPress: () => void; value: string }) => (
+  <Pressable accessibilityRole="button" onPress={onPress} style={({ pressed }) => [styles.profileInfo, pressed && styles.pressed]}>
     <Text style={styles.profileInfoLabel}>{label}</Text>
     <Text style={styles.profileInfoValue}>{value}</Text>
-  </View>
+  </Pressable>
 );
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState<TabKey>('dashboard');
+  const [notice, setNotice] = useState('');
   const { data, error, loading, reload } = useAppData();
+  const showNotice: ActionHandler = (message) => setNotice(message);
+  const changeTab = (tab: TabKey) => {
+    setNotice('');
+    setActiveTab(tab);
+  };
 
   if (loading && !data) {
     return <LoadingState />;
@@ -890,6 +1154,8 @@ function AppContent() {
   }
 
   const detailTabs = activeTab === 'online' || activeTab === 'lucas' || activeTab === 'finance';
+  const navActiveTab =
+    activeTab === 'online' ? 'exams' : activeTab === 'lucas' ? 'family' : activeTab === 'finance' ? 'dashboard' : activeTab;
   const title =
     activeTab === 'family'
       ? 'Minha Família'
@@ -900,35 +1166,37 @@ function AppContent() {
           : activeTab === 'finance'
             ? 'Financeiro'
             : activeTab === 'online'
-              ? 'Consulta Online'
+              ? 'Conversa Online'
               : activeTab === 'lucas'
                 ? 'Lucas Soares'
                 : `Olá ${data.user.firstName}`;
   const content =
     activeTab === 'family' ? (
-      <FamilyScreen data={data} onLucas={() => setActiveTab('lucas')} />
+      <FamilyScreen data={data} onAction={showNotice} onHistory={() => changeTab('history')} onLucas={() => changeTab('lucas')} />
     ) : activeTab === 'exams' ? (
-      <ExamsScreen onFinance={() => setActiveTab('finance')} onOnline={() => setActiveTab('online')} />
+      <ExamsScreen onAction={showNotice} onFamily={() => changeTab('family')} onFinance={() => changeTab('finance')} onOnline={() => changeTab('online')} />
     ) : activeTab === 'history' ? (
-      <HistoryScreen data={data} />
+      <HistoryScreen data={data} onAction={showNotice} />
     ) : activeTab === 'finance' ? (
-      <FinanceScreen />
+      <FinanceScreen onAction={showNotice} onHistory={() => changeTab('history')} />
     ) : activeTab === 'online' ? (
-      <OnlineScreen />
+      <OnlineScreen onAction={showNotice} />
     ) : activeTab === 'lucas' ? (
-      <LucasScreen data={data} />
+      <LucasScreen data={data} onAction={showNotice} onOnline={() => changeTab('online')} />
     ) : activeTab === 'profile' ? (
-      <ProfileScreen data={data} />
+      <ProfileScreen data={data} onAction={showNotice} />
     ) : (
-      <DashboardScreen data={data} onChangeTab={setActiveTab} />
+      <DashboardScreen data={data} onAction={showNotice} onChangeTab={changeTab} />
     );
 
   return (
     <ScreenShell
-      activeTab={activeTab}
+      activeTab={navActiveTab}
       data={data}
-      detail={detailTabs ? { onBack: () => setActiveTab(activeTab === 'lucas' ? 'family' : activeTab === 'online' ? 'exams' : 'dashboard') } : undefined}
-      onChangeTab={setActiveTab}
+      detail={detailTabs ? { onBack: () => changeTab(activeTab === 'lucas' ? 'family' : activeTab === 'online' ? 'exams' : 'dashboard') } : undefined}
+      notice={notice}
+      onChangeTab={changeTab}
+      onNotifications={() => showNotice('Você tem lembretes de exames, consulta online e pagamentos.')}
       title={title}
     >
       {content}
@@ -954,21 +1222,39 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: colors.background,
     flex: 1,
-    maxWidth: 390,
+    maxWidth: 393,
     position: 'relative',
     width: '100%',
   },
   scrollContent: {
-    gap: 16,
-    paddingHorizontal: 20,
-    paddingBottom: 104,
+    gap: 14,
+    paddingHorizontal: 16,
+    paddingBottom: 96,
+  },
+  feedbackBanner: {
+    alignItems: 'center',
+    backgroundColor: colors.secondaryContainer,
+    borderColor: 'rgba(75,127,19,0.18)',
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  feedbackText: {
+    color: colors.onSecondaryContainer,
+    flex: 1,
+    fontSize: 12,
+    fontWeight: '700',
+    lineHeight: 17,
   },
   header: {
     alignItems: 'center',
     flexDirection: 'row',
-    height: 64,
+    height: 58,
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
   },
   headerIdentity: {
     alignItems: 'center',
@@ -978,37 +1264,38 @@ const styles = StyleSheet.create({
     minWidth: 0,
   },
   headerAvatar: {
-    borderColor: colors.primaryContainer,
-    borderRadius: 20,
+    borderColor: colors.secondaryContainer,
+    borderRadius: 18,
     borderWidth: 2,
-    height: 40,
-    width: 40,
+    height: 36,
+    width: 36,
   },
   headerTitle: {
     color: colors.onSurface,
     flex: 1,
-    fontSize: 24,
-    fontWeight: '700',
-    lineHeight: 32,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   headerIconButton: {
     alignItems: 'center',
-    borderRadius: 20,
-    height: 40,
+    backgroundColor: colors.surface,
+    borderRadius: 18,
+    height: 36,
     justifyContent: 'center',
-    width: 40,
+    width: 36,
   },
   measurementBanner: {
-    backgroundColor: colors.secondaryContainer,
-    borderRadius: 16,
-    minHeight: 166,
+    backgroundColor: colors.primaryContainer,
+    borderRadius: 14,
+    minHeight: 148,
     overflow: 'hidden',
-    padding: 24,
+    padding: 18,
     position: 'relative',
     ...shadow,
   },
   measurementWatermark: {
-    opacity: 0.1,
+    opacity: 0.12,
     position: 'absolute',
     right: -22,
     top: -22,
@@ -1019,30 +1306,35 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   measurementOverline: {
-    color: colors.onSecondaryContainer,
+    color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 0.6,
+    letterSpacing: 0,
     lineHeight: 16,
-    opacity: 0.82,
+    opacity: 0.88,
     textTransform: 'uppercase',
   },
   measurementTime: {
-    color: colors.onSecondaryContainer,
+    color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
     lineHeight: 16,
   },
   measurementGrid: {
     flexDirection: 'row',
-    gap: 16,
-    marginTop: 16,
+    gap: 10,
+    marginTop: 14,
   },
   metricReadout: {
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderColor: 'rgba(255,255,255,0.18)',
+    borderRadius: 10,
+    borderWidth: 1,
     flex: 1,
+    padding: 12,
   },
   metricLabel: {
-    color: colors.onSecondaryContainer,
+    color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
     lineHeight: 16,
@@ -1055,13 +1347,13 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   metricValue: {
-    color: colors.onSecondaryContainer,
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 36,
+    color: colors.onPrimary,
+    fontSize: 26,
+    fontWeight: '800',
+    lineHeight: 34,
   },
   metricUnit: {
-    color: colors.onSecondaryContainer,
+    color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
     lineHeight: 16,
@@ -1069,16 +1361,16 @@ const styles = StyleSheet.create({
   statusPill: {
     alignItems: 'center',
     alignSelf: 'flex-start',
-    backgroundColor: 'rgba(77,108,0,0.1)',
+    backgroundColor: colors.secondaryContainer,
     borderRadius: 999,
     flexDirection: 'row',
     gap: 8,
-    marginTop: 12,
-    paddingHorizontal: 12,
+    marginTop: 10,
+    paddingHorizontal: 10,
     paddingVertical: 5,
   },
   statusDot: {
-    backgroundColor: colors.onSecondaryContainer,
+    backgroundColor: colors.primaryContainer,
     borderRadius: 4,
     height: 8,
     width: 8,
@@ -1092,24 +1384,28 @@ const styles = StyleSheet.create({
   actionGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
+    gap: 10,
   },
   actionButton: {
     alignItems: 'center',
-    aspectRatio: 1,
-    borderRadius: 16,
+    borderRadius: 12,
     flexBasis: '47%',
     flexGrow: 1,
-    gap: 8,
+    gap: 6,
     justifyContent: 'center',
-    minWidth: 140,
-    padding: 24,
+    minHeight: 92,
+    minWidth: 136,
+    padding: 16,
+    ...shadow,
   },
   actionLabel: {
     color: colors.onPrimaryContainer,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
+  },
+  actionLabelSecondary: {
+    color: colors.onSecondaryContainer,
   },
   sectionHeader: {
     alignItems: 'center',
@@ -1118,9 +1414,9 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.onSurface,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   linkText: {
     color: colors.primary,
@@ -1129,15 +1425,139 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     textDecorationLine: 'underline',
   },
+  agendaPanel: {
+    gap: 10,
+  },
+  agendaStack: {
+    gap: 8,
+  },
+  agendaHighlight: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.primary,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    flexDirection: 'row',
+    gap: 10,
+    padding: 10,
+    ...shadow,
+  },
+  agendaRow: {
+    alignItems: 'center',
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 12,
+    borderWidth: 1,
+    flexDirection: 'row',
+    gap: 10,
+    padding: 10,
+  },
+  agendaIconBox: {
+    alignItems: 'center',
+    backgroundColor: colors.surfaceContainerLow,
+    borderRadius: 10,
+    height: 38,
+    justifyContent: 'center',
+    width: 38,
+  },
+  agendaIconBoxLime: {
+    alignItems: 'center',
+    backgroundColor: colors.secondaryContainer,
+    borderRadius: 10,
+    height: 38,
+    justifyContent: 'center',
+    width: 38,
+  },
+  agendaCopy: {
+    flex: 1,
+    minWidth: 0,
+  },
+  agendaTitle: {
+    color: colors.onSurface,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
+  },
+  agendaMeta: {
+    color: colors.onSurfaceVariant,
+    fontSize: 11,
+    lineHeight: 15,
+  },
+  agendaTimeStrong: {
+    backgroundColor: colors.primary,
+    borderRadius: 999,
+    color: colors.onPrimary,
+    fontSize: 11,
+    fontWeight: '800',
+    lineHeight: 15,
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  agendaChip: {
+    backgroundColor: colors.tertiaryContainer,
+    borderRadius: 999,
+    color: colors.primary,
+    fontSize: 11,
+    fontWeight: '800',
+    lineHeight: 15,
+    overflow: 'hidden',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  locationCard: {
+    backgroundColor: colors.surface,
+    borderColor: colors.surfaceContainer,
+    borderRadius: 12,
+    borderWidth: 1,
+    overflow: 'hidden',
+    ...shadow,
+  },
+  locationMap: {
+    height: 112,
+    opacity: 0.9,
+    width: '100%',
+  },
+  locationMapFallback: {
+    backgroundColor: colors.surfaceContainerHigh,
+    height: 112,
+    width: '100%',
+  },
+  locationFooter: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: 8,
+    padding: 12,
+  },
+  supportCard: {
+    alignItems: 'center',
+    backgroundColor: colors.primary,
+    borderRadius: 12,
+    flexDirection: 'row',
+    gap: 10,
+    padding: 14,
+    ...shadow,
+  },
+  supportTitle: {
+    color: colors.onPrimary,
+    fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
+  },
+  supportText: {
+    color: colors.onPrimaryContainer,
+    fontSize: 12,
+    lineHeight: 17,
+  },
   timelineWrap: {
-    gap: 24,
-    paddingLeft: 32,
+    gap: 14,
+    paddingLeft: 26,
     position: 'relative',
   },
   timelineLine: {
     backgroundColor: colors.outlineVariant,
-    bottom: 8,
-    left: 11,
+    bottom: 6,
+    left: 9,
     opacity: 0.5,
     position: 'absolute',
     top: 8,
@@ -1148,19 +1568,19 @@ const styles = StyleSheet.create({
   },
   timelineDot: {
     borderColor: colors.background,
-    borderRadius: 7,
+    borderRadius: 6,
     borderWidth: 2,
-    height: 14,
-    left: -27,
+    height: 12,
+    left: -23,
     position: 'absolute',
     top: 6,
-    width: 14,
+    width: 12,
     zIndex: 1,
   },
   timelineCard: {
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     overflow: 'hidden',
     ...shadow,
@@ -1169,8 +1589,8 @@ const styles = StyleSheet.create({
     paddingBottom: 0,
   },
   timelineCardBody: {
-    gap: 8,
-    padding: 16,
+    gap: 6,
+    padding: 12,
   },
   timelineMetaRow: {
     alignItems: 'flex-start',
@@ -1180,9 +1600,9 @@ const styles = StyleSheet.create({
   timelineDate: {
     color: colors.onSurface,
     flex: 1,
-    fontSize: 14,
-    fontWeight: '700',
-    lineHeight: 20,
+    fontSize: 13,
+    fontWeight: '800',
+    lineHeight: 18,
   },
   timelineTime: {
     color: colors.onSurfaceVariant,
@@ -1198,8 +1618,8 @@ const styles = StyleSheet.create({
   timelineDetail: {
     color: colors.onSurfaceVariant,
     flex: 1,
-    fontSize: 14,
-    lineHeight: 20,
+    fontSize: 13,
+    lineHeight: 18,
   },
   timelineTagRow: {
     alignItems: 'center',
@@ -1225,15 +1645,15 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   mapImage: {
-    height: 128,
+    height: 112,
     opacity: 0.9,
     width: '100%',
   },
   familyCard: {
     backgroundColor: colors.primaryContainer,
-    borderRadius: 16,
+    borderRadius: 14,
     overflow: 'hidden',
-    padding: 24,
+    padding: 18,
     position: 'relative',
     ...shadow,
   },
@@ -1256,13 +1676,13 @@ const styles = StyleSheet.create({
   },
   familyAvatarFrame: {
     backgroundColor: colors.surface,
-    borderRadius: 16,
-    height: 64,
+    borderRadius: 14,
+    height: 58,
     padding: 2,
-    width: 64,
+    width: 58,
   },
   familyAvatar: {
-    borderRadius: 12,
+    borderRadius: 11,
     flex: 1,
   },
   familyCopy: {
@@ -1271,9 +1691,9 @@ const styles = StyleSheet.create({
   },
   familyName: {
     color: colors.onPrimary,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
+    fontSize: 18,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   planBadge: {
     alignSelf: 'flex-start',
@@ -1302,16 +1722,16 @@ const styles = StyleSheet.create({
   },
   familyMetrics: {
     flexDirection: 'row',
-    gap: 16,
-    marginTop: 24,
+    gap: 10,
+    marginTop: 18,
   },
   familyMetricCard: {
     backgroundColor: 'rgba(255,255,255,0.1)',
     borderColor: 'rgba(255,255,255,0.2)',
-    borderRadius: 12,
+    borderRadius: 10,
     borderWidth: 1,
     flex: 1,
-    padding: 16,
+    padding: 12,
   },
   familyMetricTop: {
     alignItems: 'center',
@@ -1332,9 +1752,9 @@ const styles = StyleSheet.create({
   },
   familyMetricValue: {
     color: colors.onPrimary,
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 36,
+    fontSize: 24,
+    fontWeight: '800',
+    lineHeight: 32,
   },
   familyMetricUnit: {
     color: 'rgba(255,255,255,0.6)',
@@ -1348,8 +1768,8 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 16,
-    paddingTop: 16,
+    marginTop: 14,
+    paddingTop: 14,
   },
   lastMeasureRow: {
     alignItems: 'center',
@@ -1388,43 +1808,43 @@ const styles = StyleSheet.create({
     lineHeight: 16,
   },
   listStack: {
-    gap: 12,
+    gap: 10,
   },
   memberRow: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: 'rgba(225,227,228,0.6)',
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 12,
     ...shadow,
   },
   memberLeft: {
     alignItems: 'center',
     flex: 1,
     flexDirection: 'row',
-    gap: 16,
+    gap: 12,
   },
   memberAvatarImage: {
-    borderRadius: 12,
-    height: 48,
-    width: 48,
+    borderRadius: 11,
+    height: 42,
+    width: 42,
   },
   memberAvatarFallback: {
     alignItems: 'center',
     backgroundColor: colors.surfaceContainerHigh,
-    borderRadius: 12,
-    height: 48,
+    borderRadius: 11,
+    height: 42,
     justifyContent: 'center',
-    width: 48,
+    width: 42,
   },
   memberName: {
     color: colors.onSurface,
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 24,
+    fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   memberStatusRow: {
     alignItems: 'center',
@@ -1449,18 +1869,18 @@ const styles = StyleSheet.create({
   memberActions: {
     alignItems: 'center',
     flexDirection: 'row',
-    gap: 16,
+    gap: 10,
   },
   summaryGrid: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 10,
   },
   summaryCard: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flex: 1,
-    minHeight: 104,
-    padding: 16,
+    minHeight: 92,
+    padding: 14,
   },
   summaryCardSecondary: {
     backgroundColor: 'rgba(192,240,99,0.3)',
@@ -1488,18 +1908,18 @@ const styles = StyleSheet.create({
   },
   historyHero: {
     backgroundColor: colors.primaryContainer,
-    borderRadius: 16,
-    height: 128,
+    borderRadius: 14,
+    height: 118,
     justifyContent: 'flex-end',
     overflow: 'hidden',
-    padding: 24,
+    padding: 18,
     ...shadow,
   },
   historyHeroTitle: {
     color: colors.onPrimaryContainer,
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 36,
+    fontSize: 24,
+    fontWeight: '800',
+    lineHeight: 32,
   },
   historyHeroCopy: {
     color: colors.onPrimaryContainer,
@@ -1514,8 +1934,8 @@ const styles = StyleSheet.create({
   filterChip: {
     backgroundColor: colors.surfaceContainerHigh,
     borderRadius: 999,
-    paddingHorizontal: 24,
-    paddingVertical: 8,
+    paddingHorizontal: 18,
+    paddingVertical: 7,
   },
   filterChipActive: {
     backgroundColor: colors.secondaryContainer,
@@ -1530,10 +1950,10 @@ const styles = StyleSheet.create({
     color: colors.onSecondaryContainer,
   },
   historyGroups: {
-    gap: 24,
+    gap: 18,
   },
   historyGroup: {
-    gap: 16,
+    gap: 10,
   },
   historyGroupTitleRow: {
     alignItems: 'center',
@@ -1547,27 +1967,27 @@ const styles = StyleSheet.create({
   },
   historyGroupTitle: {
     color: colors.onSurface,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   historyCard: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
-    gap: 16,
-    padding: 16,
+    gap: 12,
+    padding: 12,
     ...shadow,
   },
   historyIconBox: {
     alignItems: 'center',
-    borderRadius: 12,
-    height: 48,
+    borderRadius: 10,
+    height: 42,
     justifyContent: 'center',
-    width: 48,
+    width: 42,
   },
   historyCardCopy: {
     flex: 1,
@@ -1583,9 +2003,9 @@ const styles = StyleSheet.create({
   historyCardTitle: {
     color: colors.onSurface,
     flex: 1,
-    fontSize: 16,
-    fontWeight: '600',
-    lineHeight: 24,
+    fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   historyCardTrailing: {
     color: colors.onSurfaceVariant,
@@ -1608,15 +2028,15 @@ const styles = StyleSheet.create({
     color: colors.onSurfaceVariant,
     fontSize: 12,
     fontWeight: '500',
-    letterSpacing: 0.6,
+    letterSpacing: 0,
     lineHeight: 16,
     textTransform: 'uppercase',
   },
   historyMetricValue: {
     color: colors.primary,
-    fontSize: 20,
-    fontWeight: '600',
-    lineHeight: 28,
+    fontSize: 18,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   historySubtitle: {
     color: colors.onSurfaceVariant,
@@ -1625,13 +2045,13 @@ const styles = StyleSheet.create({
   },
   insightGrid: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 10,
     marginTop: 8,
   },
   insightCard: {
-    borderRadius: 16,
+    borderRadius: 12,
     flex: 1,
-    height: 128,
+    height: 108,
     justifyContent: 'space-between',
     padding: 16,
   },
@@ -1661,13 +2081,13 @@ const styles = StyleSheet.create({
   },
   pageIntro: {
     gap: 4,
-    paddingTop: 4,
+    paddingTop: 2,
   },
   pageTitle: {
     color: colors.onSurface,
-    fontSize: 28,
-    fontWeight: '700',
-    lineHeight: 36,
+    fontSize: 20,
+    fontWeight: '800',
+    lineHeight: 28,
   },
   pageCopy: {
     color: colors.onSurfaceVariant,
@@ -1677,19 +2097,19 @@ const styles = StyleSheet.create({
   serviceGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 16,
+    gap: 10,
   },
   serviceCard: {
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexBasis: '47%',
     flexGrow: 1,
-    gap: 18,
-    minHeight: 132,
-    minWidth: 140,
-    padding: 20,
+    gap: 14,
+    minHeight: 118,
+    minWidth: 136,
+    padding: 16,
     ...shadow,
   },
   serviceCardPrimary: {
@@ -1702,31 +2122,34 @@ const styles = StyleSheet.create({
   },
   serviceLabel: {
     color: colors.onSurface,
-    fontSize: 18,
-    fontWeight: '700',
-    lineHeight: 24,
+    fontSize: 15,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   serviceLabelStrong: {
     color: colors.onPrimaryContainer,
+  },
+  serviceLabelSecondary: {
+    color: colors.onSecondaryContainer,
   },
   appointmentCard: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
-    gap: 16,
-    padding: 16,
+    gap: 12,
+    padding: 12,
     ...shadow,
   },
   appointmentDate: {
     alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: 12,
-    height: 58,
+    borderRadius: 10,
+    height: 52,
     justifyContent: 'center',
-    width: 58,
+    width: 52,
   },
   appointmentDateSecondary: {
     backgroundColor: colors.secondaryContainer,
@@ -1736,6 +2159,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '800',
     lineHeight: 18,
+  },
+  appointmentDateTextSecondary: {
+    color: colors.onSecondaryContainer,
   },
   appointmentTimeText: {
     color: colors.onPrimaryContainer,
@@ -1749,9 +2175,9 @@ const styles = StyleSheet.create({
   },
   appointmentTitle: {
     color: colors.onSurface,
-    fontSize: 16,
-    fontWeight: '700',
-    lineHeight: 22,
+    fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   appointmentSubtitle: {
     color: colors.onSurfaceVariant,
@@ -1773,20 +2199,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 12,
-    padding: 14,
+    padding: 12,
     ...shadow,
   },
   examQueueIcon: {
     alignItems: 'center',
     backgroundColor: colors.surfaceContainerLow,
-    borderRadius: 12,
-    height: 44,
+    borderRadius: 10,
+    height: 40,
     justifyContent: 'center',
-    width: 44,
+    width: 40,
   },
   examQueueMeta: {
     alignItems: 'flex-end',
@@ -1807,10 +2233,10 @@ const styles = StyleSheet.create({
   checkoutCard: {
     alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: 16,
+    borderRadius: 12,
     flexDirection: 'row',
     gap: 14,
-    padding: 20,
+    padding: 16,
     ...shadow,
   },
   checkoutCopy: {
@@ -1819,9 +2245,9 @@ const styles = StyleSheet.create({
   },
   checkoutTitle: {
     color: colors.onPrimary,
-    fontSize: 20,
-    fontWeight: '700',
-    lineHeight: 28,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   checkoutText: {
     color: colors.onPrimaryContainer,
@@ -1832,7 +2258,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 10,
@@ -1846,16 +2272,16 @@ const styles = StyleSheet.create({
   onlineHero: {
     alignItems: 'center',
     backgroundColor: colors.secondaryContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     flexDirection: 'row',
     gap: 16,
-    padding: 20,
+    padding: 16,
   },
   onlineHeroTitle: {
     color: colors.onSecondaryContainer,
-    fontSize: 20,
-    fontWeight: '700',
-    lineHeight: 28,
+    fontSize: 17,
+    fontWeight: '800',
+    lineHeight: 24,
   },
   onlineHeroText: {
     color: colors.onSecondaryContainer,
@@ -1867,20 +2293,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 12,
-    padding: 14,
+    padding: 12,
     ...shadow,
   },
   doctorAvatar: {
     alignItems: 'center',
     backgroundColor: colors.tertiaryFixed,
-    borderRadius: 16,
-    height: 56,
+    borderRadius: 12,
+    height: 50,
     justifyContent: 'center',
-    width: 56,
+    width: 50,
   },
   doctorCopy: {
     flex: 1,
@@ -1889,9 +2315,9 @@ const styles = StyleSheet.create({
   },
   doctorName: {
     color: colors.onSurface,
-    fontSize: 16,
-    fontWeight: '700',
-    lineHeight: 22,
+    fontSize: 14,
+    fontWeight: '800',
+    lineHeight: 20,
   },
   doctorMeta: {
     color: colors.onSurfaceVariant,
@@ -1911,7 +2337,7 @@ const styles = StyleSheet.create({
   consultButton: {
     alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: 12,
+    borderRadius: 10,
     gap: 4,
     minHeight: 48,
     justifyContent: 'center',
@@ -1925,24 +2351,24 @@ const styles = StyleSheet.create({
   },
   financeHero: {
     backgroundColor: colors.primary,
-    borderRadius: 18,
+    borderRadius: 14,
     gap: 6,
-    padding: 24,
+    padding: 18,
     ...shadow,
   },
   financeLabel: {
     color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 0.6,
+    letterSpacing: 0,
     lineHeight: 16,
     textTransform: 'uppercase',
   },
   financeValue: {
     color: colors.onPrimary,
-    fontSize: 32,
+    fontSize: 28,
     fontWeight: '800',
-    lineHeight: 40,
+    lineHeight: 36,
   },
   financeCopy: {
     color: colors.onPrimaryContainer,
@@ -1956,7 +2382,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.outlineVariant,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     gap: 14,
@@ -1965,10 +2391,10 @@ const styles = StyleSheet.create({
   financeActionIcon: {
     alignItems: 'center',
     backgroundColor: colors.tertiaryFixed,
-    borderRadius: 14,
-    height: 48,
+    borderRadius: 12,
+    height: 44,
     justifyContent: 'center',
-    width: 48,
+    width: 44,
   },
   financeActionLabel: {
     color: colors.primary,
@@ -1985,11 +2411,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 16,
+    padding: 12,
     ...shadow,
   },
   financeDueLeft: {
@@ -2057,21 +2483,21 @@ const styles = StyleSheet.create({
   lucasProfileCard: {
     alignItems: 'center',
     backgroundColor: colors.primaryContainer,
-    borderRadius: 18,
-    padding: 24,
+    borderRadius: 14,
+    padding: 18,
     ...shadow,
   },
   lucasAvatar: {
     backgroundColor: colors.surfaceContainerHigh,
     borderColor: colors.onPrimaryContainer,
-    borderRadius: 42,
+    borderRadius: 38,
     borderWidth: 3,
-    height: 84,
-    width: 84,
+    height: 76,
+    width: 76,
   },
   lucasName: {
     color: colors.onPrimary,
-    fontSize: 22,
+    fontSize: 20,
     fontWeight: '800',
     lineHeight: 30,
     marginTop: 12,
@@ -2080,7 +2506,7 @@ const styles = StyleSheet.create({
     color: colors.onPrimaryContainer,
     fontSize: 12,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 0,
     lineHeight: 16,
     textTransform: 'uppercase',
   },
@@ -2093,16 +2519,16 @@ const styles = StyleSheet.create({
   nextConsultCard: {
     alignItems: 'center',
     backgroundColor: colors.primary,
-    borderRadius: 16,
+    borderRadius: 12,
     flexDirection: 'row',
     gap: 14,
-    padding: 18,
+    padding: 14,
   },
   nextConsultTitle: {
     color: colors.onPrimary,
-    fontSize: 18,
-    fontWeight: '700',
-    lineHeight: 24,
+    fontSize: 16,
+    fontWeight: '800',
+    lineHeight: 22,
   },
   nextConsultText: {
     color: colors.onPrimaryContainer,
@@ -2122,8 +2548,8 @@ const styles = StyleSheet.create({
   profileCard: {
     alignItems: 'center',
     backgroundColor: colors.primaryContainer,
-    borderRadius: 16,
-    padding: 24,
+    borderRadius: 14,
+    padding: 18,
     ...shadow,
   },
   profileAvatar: {
@@ -2155,7 +2581,7 @@ const styles = StyleSheet.create({
   profileInfo: {
     backgroundColor: colors.surface,
     borderColor: colors.surfaceContainer,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     flexBasis: '47%',
     flexGrow: 1,
@@ -2180,11 +2606,11 @@ const styles = StyleSheet.create({
   bottomNav: {
     alignItems: 'center',
     backgroundColor: colors.surface,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
+    borderTopLeftRadius: 18,
+    borderTopRightRadius: 18,
     bottom: 0,
     flexDirection: 'row',
-    height: 80,
+    height: 74,
     justifyContent: 'space-around',
     left: 0,
     paddingHorizontal: 8,
@@ -2197,8 +2623,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 999,
     gap: 2,
-    minHeight: 48,
-    minWidth: 64,
+    minHeight: 46,
+    minWidth: 58,
     justifyContent: 'center',
     paddingHorizontal: 8,
     paddingVertical: 4,
@@ -2208,7 +2634,7 @@ const styles = StyleSheet.create({
   },
   navText: {
     color: colors.onSurfaceVariant,
-    fontSize: 11,
+    fontSize: 10,
     fontWeight: '500',
     lineHeight: 16,
   },
